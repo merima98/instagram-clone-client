@@ -5,9 +5,9 @@ import { NavLink } from "react-router-dom";
 const Wrapper = styled.div`
   align-items: center;
   padding-top: 3rem;
-  display: grid;
-  grid-template-rows: repeat(2, 0.5fr);
   justify-content: space-around;
+  max-width: 350px;
+  margin: 0 auto;
 `;
 
 const Title = styled.h1`
@@ -17,6 +17,7 @@ const Title = styled.h1`
 const Container = styled.div`
   border: 1px solid #dbdbdb;
   background-color: #ffffff;
+  margin-bottom: 1rem;
 `;
 
 const Form = styled.form`
@@ -33,6 +34,7 @@ const Input = styled.input`
   padding: 9px 0px 7px 8px;
   border-radius: 4px;
   border: 0.5px solid #dbdbdb;
+  outline: none;
 `;
 
 const Submit = styled.button`
@@ -43,6 +45,7 @@ const Submit = styled.button`
   margin-bottom: 1rem;
   border: none;
   color: #fff;
+  outline: none;
 `;
 
 const SideContainer = styled.div`

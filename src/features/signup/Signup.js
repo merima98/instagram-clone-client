@@ -1,6 +1,88 @@
 import React from "react";
+import styled from "styled-components";
+import { NavLink } from "react-router-dom";
+
+const Wrapper = styled.div`
+  align-items: center;
+  padding-top: 3rem;
+  justify-content: space-around;
+  max-width: 350px;
+  margin: 0 auto;
+`;
+
+const Title = styled.h1`
+  text-align: center;
+`;
+
+const Container = styled.div`
+  border: 1px solid #dbdbdb;
+  background-color: #ffffff;
+  margin-bottom: 1rem;
+`;
+
+const Form = styled.form`
+  padding: 12px;
+  margin: 24px 0px 0px;
+  text-align: center;
+`;
+
+const Input = styled.input`
+  width: 80%;
+  margin-bottom: 0.25rem;
+  background-color: #fafafa;
+  font-size: 14px;
+  padding: 9px 0px 7px 8px;
+  border-radius: 4px;
+  border: 0.5px solid #dbdbdb;
+  outline: none;
+`;
+
+const Submit = styled.button`
+  width: 80%;
+  padding: 5px 9px;
+  background-color: #0095f6;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  border: none;
+  color: #fff;
+  outline: none;
+`;
+
+const SideContainer = styled.div`
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #dbdbdb;
+  background-color: #ffffff;
+`;
+const Label = styled.span`
+  margin: 0 auto;
+`;
+
+const StyledLink = styled(NavLink)`
+  text-decoration: none;
+  color: #0095f6;
+`;
 
 function Signup() {
-  return <div>Signup</div>;
+  return (
+    <Wrapper>
+      <Container>
+        <Title>supergram</Title>
+        <Form>
+          <Input />
+          <Input />
+          <Input />
+          <Input />
+          <Submit type="submit">Log in</Submit>
+        </Form>
+      </Container>
+      <SideContainer>
+        <Label>
+          Have an account?
+          <StyledLink to="/login"> Log in</StyledLink>
+        </Label>
+      </SideContainer>
+    </Wrapper>
+  );
 }
 export default Signup;
