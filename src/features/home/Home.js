@@ -1,32 +1,42 @@
 import React from "react";
 import styled from "styled-components";
-import { MapPin } from "react-feather";
 
 import Login from "../login/Login";
 import { BREAKPOINTS } from "../../constants";
+import homeImage from "../../images/homeImg.jpg";
 
 const Wrapper = styled.div`
   display: block;
   @media (min-width: ${BREAKPOINTS.SMALL_DEVICES}) {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr 1fr;
     margin: 0 auto;
-    width: 80%;
+    width: 70%;
   }
 `;
+
 const StyledImage = styled.div`
   display: none;
   @media (min-width: ${BREAKPOINTS.SMALL_DEVICES}) {
-    padding-top: 6rem;
-    text-align: center;
+    padding-top: 3.2rem;
+    width: 90%;
+    height: 80%;
     display: block;
   }
+`;
+
+const Image = styled.img.attrs({
+  src: homeImage,
+})`
+  width: 100%;
+  height: 100%;
+  border-radius: 2%;
 `;
 function Home() {
   return (
     <Wrapper>
       <StyledImage>
-        <MapPin style={{ width: "10rem", height: "10rem", color: "#0095f6" }} />
+        <Image />
       </StyledImage>
       <Login />
     </Wrapper>

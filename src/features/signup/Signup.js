@@ -67,12 +67,12 @@ function Signup() {
   return (
     <Wrapper>
       <Container>
-        <Title>supergram</Title>
+        <Title>worldgram</Title>
         <Form>
-          <Input />
-          <Input />
-          <Input />
-          <Input />
+          <Input placeholder="Mobile Number or Email" />
+          <Input placeholder="Full Name" />
+          <Input placeholder="Username" />
+          <Input placeholder="Password" />
           <Submit type="submit">Log in</Submit>
         </Form>
       </Container>

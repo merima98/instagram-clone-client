@@ -3,9 +3,7 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
 const Wrapper = styled.div`
-  align-items: center;
   padding-top: 3rem;
-  justify-content: space-around;
   max-width: 350px;
   margin: 0 auto;
 `;
@@ -30,8 +28,7 @@ const Input = styled.input`
   width: 80%;
   margin-bottom: 0.25rem;
   background-color: #fafafa;
-  font-size: 14px;
-  padding: 9px 0px 7px 8px;
+  padding: 8px;
   border-radius: 4px;
   border: 0.5px solid #dbdbdb;
   outline: none;
@@ -67,10 +64,10 @@ function Login() {
   return (
     <Wrapper>
       <Container>
-        <Title>supergram</Title>
+        <Title>worldgram</Title>
         <Form>
-          <Input />
-          <Input />
+          <Input placeholder="Phone, number, username or email" />
+          <Input placeholder="Password" />
           <Submit type="submit">Log in</Submit>
         </Form>
       </Container>
