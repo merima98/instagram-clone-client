@@ -5,7 +5,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Sun, Moon } from "react-feather";
 
-import { useDarkMode } from "../../state";
+import { useDarkMode, useAuth } from "../../state";
+import mutations from "../../api/mutations";
 
 const Wrapper = styled.div`
   align-items: center;
@@ -91,9 +92,11 @@ const validationSchema = Yup.object().shape({
 });
 function Signup() {
   const history = useHistory();
-  function onSubmit() {
-    console.log("Submitted");
-    history.push("/login");
+  async function onSubmit(values) {
+    const newUser = await mutations.signup(values);
+    const token = newUser.data.token;
+    history.push("/");
+    setIsLoggedIn(true, token);
   }
   const formik = useFormik({
     initialValues: {
@@ -109,6 +112,8 @@ function Signup() {
 
   const setIsDarkMode = useDarkMode((state) => state.setIsDarkMode);
   const isDarkMode = useDarkMode((state) => state.isDarkMode);
+  const setIsLoggedIn = useAuth((state) => state.setIsLoggedIn);
+
   function onChange() {
     setIsDarkMode(!isDarkMode);
   }
