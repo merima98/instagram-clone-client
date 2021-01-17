@@ -18,6 +18,7 @@ const Wrapper = styled.div`
 
 const Title = styled.h1`
   text-align: center;
+  color: ${(props) => props.theme.colors.titleColor};
 `;
 
 const Container = styled.div`
@@ -63,6 +64,7 @@ const SideContainer = styled.div`
 `;
 const Label = styled.span`
   margin: 0 auto;
+  color: ${(props) => props.theme.colors.titleColor};
 `;
 
 const StyledLink = styled(NavLink)`

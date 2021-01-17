@@ -1,14 +1,15 @@
 export const darkTheme = {
   colors: {
-    borderColor: "#dbdbdb",
-    backgroundColor: "#161B22",
-    backgroundColorInput: "#fafafa",
-    colorInputBorder: "#dbdbdb",
+    borderColor: "#8B8D90",
+    backgroundColor: "#1d242e",
+    backgroundColorInput: "#161B22",
+    colorInputBorder: "#8B8D90",
     backgroundColorSubmit: "#0095f6",
     color: "#fff",
-    sideBarContainerBackgroundColor: "#161B22",
+    titleColor: "#fff",
+    sideBarContainerBackgroundColor: "#1d242e",
     styledLinkColor: "#0095f6",
-    body: "#fafafa",
+    body: "#161B22",
   },
 };
 
@@ -19,6 +20,7 @@ export const lightTheme = {
     backgroundColorInput: "#fafafa",
     colorInputBorder: "#dbdbdb",
     backgroundColorSubmit: "#0095f6",
+    titleColor: "#000",
     color: "#fff",
     sideBarContainerBackgroundColor: "#ffffff",
     styledLinkColor: "#0095f6",

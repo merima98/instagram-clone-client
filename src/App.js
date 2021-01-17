@@ -8,6 +8,7 @@ import {
   LOGGED_IN_DEFAULT_LAYOUT_ROUTES,
   LOGGED_OUT_NO_LAYOUT_ROUTES,
 } from "./routing/routes";
+import GlobalStyle from "./globalStyles.js";
 
 function App() {
   const isDarkMode = useDarkMode((state) => state.isDarkMode);
@@ -19,6 +20,7 @@ function App() {
   );
   return (
     <ThemeProvider theme={theme}>
+      <GlobalStyle />
       <BrowserRouter>
         {isLoggedIn && (
           <Switch>
