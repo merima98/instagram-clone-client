@@ -1,9 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { Moon, Sun } from "react-feather";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
-import { useDarkMode } from "../../state";
+import { useDarkMode, useAuth } from "../../state";
+import mutations from "../../api/mutations";
 
 const Wrapper = styled.div`
   align-items: center;
@@ -40,6 +43,12 @@ const Input = styled.input`
   border: 0.5px solid ${(props) => props.theme.colors.colorInputBorder};
   outline: none;
   color: ${(props) => props.theme.colors.colorInput};
+  ${({ error }) =>
+    error &&
+    `
+      border: 1px solid red;
+      color: red;
+    `}
 `;
 
 const Submit = styled.button`
@@ -69,21 +78,97 @@ const StyledLink = styled(NavLink)`
   text-decoration: none;
   color: ${(props) => props.theme.colors.styledLinkColor};
 `;
+
+const ErrorMessage = styled.div`
+  margin-bottom: 0.25rem;
+  font-size: 12px;
+  padding: 9px 0px 7px 8px;
+  border-radius: 4px;
+  outline: none;
+  color: red;
+`;
+
+const validationSchema = Yup.object().shape({
+  username: Yup.string()
+    .min(2, "Username is too short!")
+    .max(50, "Username is too long!")
+    .required("Username is required field!"),
+  password: Yup.string()
+    .min(2, "Password is too short!")
+    .max(50, "Password is too long!")
+    .required("Password is required field!"),
+});
+
 function Login() {
   const setIsDarkMode = useDarkMode((state) => state.setIsDarkMode);
   const isDarkMode = useDarkMode((state) => state.isDarkMode);
+  const history = useHistory();
+  const setIsLoggedIn = useAuth((state) => state.setIsLoggedIn);
 
   function onChange() {
     setIsDarkMode(!isDarkMode);
   }
+
+  async function onSubmit(values) {
+    try {
+      const response = await mutations.signin(values);
+      const token = response.data.token;
+      history.push("/");
+      setIsLoggedIn(true, token);
+    } catch (err) {
+      if (err.response.data.exception === "UserNotFound") {
+        formik.setErrors({ password: "Username or password is incorrect!" });
+      }
+    }
+  }
+
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+    validationSchema,
+    onSubmit: onSubmit,
+  });
   return (
     <Wrapper>
       <Container>
         <Title>worldgram</Title>
-        <Form>
-          <Input placeholder="Phone, number, username or email" />
-          <Input placeholder="Password" />
-          <Submit type="submit">Log in</Submit>
+        <Form onSubmit={formik.handleSubmit}>
+          <Input
+            placeholder="Username"
+            onChange={formik.handleChange}
+            value={formik.values.username}
+            name="username"
+            error={formik.errors.password && formik.touched.password}
+          />
+          {formik.errors.username ? (
+            <ErrorMessage>{formik.errors.username}</ErrorMessage>
+          ) : null}
+          <Input
+            placeholder="Password"
+            onChange={formik.handleChange}
+            value={formik.values.password}
+            name="password"
+            type="password"
+            autoComplete="off"
+            error={formik.errors.password && formik.touched.password}
+          />
+          {formik.errors.password ? (
+            <ErrorMessage>{formik.errors.password}</ErrorMessage>
+          ) : null}
+          <Submit
+            disabled={!(formik.isValid && formik.dirty)}
+            type="submit"
+            style={{
+              backgroundColor: !(formik.isValid && formik.dirty)
+                ? "#B2DFFC"
+                : null,
+              color: !(formik.isValid && formik.dirty) ? "#fff" : null,
+            }}
+          >
+            Log in
+          </Submit>
         </Form>
       </Container>
       <SideContainer>

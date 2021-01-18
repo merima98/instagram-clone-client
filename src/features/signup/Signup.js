@@ -43,7 +43,6 @@ const Input = styled.input`
   border: 0.5px solid ${(props) => props.theme.colors.colorInputBorder};
   outline: none;
   color: ${(props) => props.theme.colors.colorInput};
-
   ${({ error }) =>
     error &&
     `
@@ -100,7 +99,6 @@ const validationSchema = Yup.object().shape({
     .min(2, "Last name is too short!")
     .max(50, "Last name is too long!")
     .required("Last name is required field!"),
-
   username: Yup.string()
     .min(2, "Username is too short!")
     .max(50, "Username is too long!")
@@ -178,7 +176,6 @@ function Signup() {
           {formik.errors.firstName ? (
             <ErrorMessage>{formik.errors.firstName}</ErrorMessage>
           ) : null}
-
           <Input
             placeholder="Last Name"
             onChange={formik.handleChange}
@@ -188,7 +185,6 @@ function Signup() {
           {formik.errors.lastName ? (
             <ErrorMessage>{formik.errors.lastName}</ErrorMessage>
           ) : null}
-
           <Input
             placeholder="Username"
             onChange={formik.handleChange}

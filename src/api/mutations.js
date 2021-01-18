@@ -4,4 +4,8 @@ function signup(credentials) {
   return axios.post(`/signup`, credentials);
 }
 
-export default { signup };
+function signin(credentials) {
+  return axios.post(`/signin`, credentials);
+}
+
+export default { signup, signin };
