@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { NavLink, useHistory } from "react-router-dom";
 import { useFormik } from "formik";
@@ -106,8 +106,6 @@ const validationSchema = Yup.object().shape({
 
 function Signup() {
   const history = useHistory();
-  const [isUsernameError, setIsUsernameError] = useState(false);
-  const [isEmailError, setIsEmailError] = useState(false);
   const setIsDarkMode = useDarkMode((state) => state.setIsDarkMode);
   const isDarkMode = useDarkMode((state) => state.isDarkMode);
   const setIsLoggedIn = useAuth((state) => state.setIsLoggedIn);
@@ -127,15 +125,13 @@ function Signup() {
         err.response.data.exception === "UsernameAllreadyInUseException" &&
         err.response.data.exception !== "EmailAllreadyInUseException"
       ) {
-        setIsEmailError(false);
-        setIsUsernameError(true);
+        formik.setErrors({ username: "Username already in use!" });
       }
       if (
         err.response.data.exception === "EmailAllreadyInUseException" &&
         err.response.data.exception !== "UsernameAllreadyInUseException"
       ) {
-        setIsUsernameError(false);
-        setIsEmailError(true);
+        formik.setErrors({ email: "Email already in use!" });
       }
     }
   }
@@ -161,10 +157,7 @@ function Signup() {
             value={formik.values.email}
             name="email"
             placeholder="Email"
-            style={isEmailError ? { border: "1px solid red" } : null}
-            error
           />
-          {isEmailError && <ErrorMessage>Email already in use!</ErrorMessage>}
           {formik.errors.email ? (
             <ErrorMessage>{formik.errors.email}</ErrorMessage>
           ) : null}
@@ -193,15 +186,10 @@ function Signup() {
             onChange={formik.handleChange}
             value={formik.values.username}
             name="username"
-            style={isUsernameError ? { border: "1px solid red" } : null}
           />
           {formik.errors.username ? (
             <ErrorMessage>{formik.errors.username}</ErrorMessage>
           ) : null}
-
-          {isUsernameError && (
-            <ErrorMessage>Username already in use!</ErrorMessage>
-          )}
           <Input
             placeholder="Password"
             onChange={formik.handleChange}
