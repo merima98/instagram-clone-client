@@ -43,6 +43,13 @@ const Input = styled.input`
   border: 0.5px solid ${(props) => props.theme.colors.colorInputBorder};
   outline: none;
   color: ${(props) => props.theme.colors.colorInput};
+
+  ${({ error }) =>
+    error &&
+    `
+      border: 1px solid red;
+      color: red;
+    `}
 `;
 
 const ErrorMessage = styled.div`
@@ -157,6 +164,7 @@ function Signup() {
             value={formik.values.email}
             name="email"
             placeholder="Email"
+            error={formik.errors.email && formik.touched.email}
           />
           {formik.errors.email ? (
             <ErrorMessage>{formik.errors.email}</ErrorMessage>
@@ -186,6 +194,7 @@ function Signup() {
             onChange={formik.handleChange}
             value={formik.values.username}
             name="username"
+            error={formik.errors.username && formik.touched.username}
           />
           {formik.errors.username ? (
             <ErrorMessage>{formik.errors.username}</ErrorMessage>
