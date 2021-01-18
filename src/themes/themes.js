@@ -10,6 +10,7 @@ export const darkTheme = {
     sideBarContainerBackgroundColor: "#1d242e",
     styledLinkColor: "#0095f6",
     body: "#161B22",
+    colorInput: "#fff",
   },
 };
 
@@ -25,5 +26,6 @@ export const lightTheme = {
     sideBarContainerBackgroundColor: "#ffffff",
     styledLinkColor: "#0095f6",
     body: "#fafafa",
+    colorInput: "#000",
   },
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { NavLink, useHistory } from "react-router-dom";
 import { useFormik } from "formik";
@@ -42,6 +42,16 @@ const Input = styled.input`
   border-radius: 4px;
   border: 0.5px solid ${(props) => props.theme.colors.colorInputBorder};
   outline: none;
+  color: ${(props) => props.theme.colors.colorInput};
+`;
+
+const ErrorMessage = styled.div`
+  margin-bottom: 0.25rem;
+  font-size: 12px;
+  padding: 9px 0px 7px 8px;
+  border-radius: 4px;
+  outline: none;
+  color: red;
 `;
 
 const Submit = styled.button`
@@ -92,13 +102,39 @@ const validationSchema = Yup.object().shape({
     .max(50, "Password is too long!")
     .required("Password is required field"),
 });
+
 function Signup() {
   const history = useHistory();
+  const [isUsernameError, setIsUsernameError] = useState(false);
+  const [isEmailError, setIsEmailError] = useState(false);
+
+  useEffect(() => {
+    setIsUsernameError(false);
+    setIsEmailError(false);
+  }, [setIsEmailError, setIsUsernameError]);
+
   async function onSubmit(values) {
-    const newUser = await mutations.signup(values);
-    const token = newUser.data.token;
-    history.push("/");
-    setIsLoggedIn(true, token);
+    try {
+      const response = await mutations.signup(values);
+      const token = response.data.token;
+      history.push("/");
+      setIsLoggedIn(true, token);
+    } catch (err) {
+      if (
+        err.response.data.exception === "UsernameAllreadyInUseException" &&
+        err.response.data.exception !== "EmailAllreadyInUseException"
+      ) {
+        setIsEmailError(false);
+        setIsUsernameError(true);
+      }
+      if (
+        err.response.data.exception === "EmailAllreadyInUseException" &&
+        err.response.data.exception !== "UsernameAllreadyInUseException"
+      ) {
+        setIsUsernameError(false);
+        setIsEmailError(true);
+      }
+    }
   }
   const formik = useFormik({
     initialValues: {
@@ -129,13 +165,16 @@ function Signup() {
             value={formik.values.email}
             name="email"
             placeholder="Mobile Number or Email"
+            style={isEmailError ? { border: "1px solid red" } : null}
           />
+          {isEmailError && <ErrorMessage>Email already in use!</ErrorMessage>}
           <Input
             placeholder="First Name"
             onChange={formik.handleChange}
             value={formik.values.firstName}
             name="firstName"
           />
+
           <Input
             placeholder="Last Name"
             onChange={formik.handleChange}
@@ -147,7 +186,11 @@ function Signup() {
             onChange={formik.handleChange}
             value={formik.values.username}
             name="username"
+            style={isUsernameError ? { border: "1px solid red" } : null}
           />
+          {isUsernameError && (
+            <ErrorMessage>Username already in use!</ErrorMessage>
+          )}
           <Input
             placeholder="Password"
             onChange={formik.handleChange}
