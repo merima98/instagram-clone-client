@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+import { Moon, Sun } from "react-feather";
+
+import { useDarkMode } from "../../state";
 
 const Wrapper = styled.div`
   align-items: center;
@@ -67,6 +70,12 @@ const StyledLink = styled(NavLink)`
   color: ${(props) => props.theme.colors.styledLinkColor};
 `;
 function Login() {
+  const setIsDarkMode = useDarkMode((state) => state.setIsDarkMode);
+  const isDarkMode = useDarkMode((state) => state.isDarkMode);
+
+  function onChange() {
+    setIsDarkMode(!isDarkMode);
+  }
   return (
     <Wrapper>
       <Container>
@@ -80,7 +89,28 @@ function Login() {
       <SideContainer>
         <Label>
           Don't have an account?
-          <StyledLink to="/signup"> Sign up</StyledLink>
+          <StyledLink to="/signup"> Sign up </StyledLink>
+          {isDarkMode ? (
+            <Sun
+              style={{
+                cursor: "pointer",
+                color: "#8B8D90",
+                height: "14px",
+                width: "14px",
+              }}
+              onClick={onChange}
+            />
+          ) : (
+            <Moon
+              style={{
+                cursor: "pointer",
+                color: "#8B8D90",
+                height: "14px",
+                width: "14px",
+              }}
+              onClick={onChange}
+            />
+          )}
         </Label>
       </SideContainer>
     </Wrapper>
