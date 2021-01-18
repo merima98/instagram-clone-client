@@ -82,25 +82,26 @@ const StyledLink = styled(NavLink)`
   color: ${(props) => props.theme.colors.styledLinkColor};
 `;
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string()
-    .min(2, "First name is too short!")
-    .max(50, "First name is too long!")
-    .required("First name is required field"),
-  lastName: Yup.string()
-    .min(2, "Last name is too short!")
-    .max(50, "Last name is too long!")
-    .required("Last name is required field"),
   email: Yup.string()
     .email("Invalid email!")
     .required("Email is required field"),
+  firstName: Yup.string()
+    .min(2, "First name is too short!")
+    .max(50, "First name is too long!")
+    .required("First name is required field!"),
+  lastName: Yup.string()
+    .min(2, "Last name is too short!")
+    .max(50, "Last name is too long!")
+    .required("Last name is required field!"),
+
   username: Yup.string()
     .min(2, "Username is too short!")
     .max(50, "Username is too long!")
-    .required("Username is required field"),
+    .required("Username is required field!"),
   password: Yup.string()
     .min(2, "Password is too short!")
     .max(50, "Password is too long!")
-    .required("Password is required field"),
+    .required("Password is required field!"),
 });
 
 function Signup() {
@@ -161,14 +162,21 @@ function Signup() {
             name="email"
             placeholder="Email"
             style={isEmailError ? { border: "1px solid red" } : null}
+            error
           />
           {isEmailError && <ErrorMessage>Email already in use!</ErrorMessage>}
+          {formik.errors.email ? (
+            <ErrorMessage>{formik.errors.email}</ErrorMessage>
+          ) : null}
           <Input
             placeholder="First Name"
             onChange={formik.handleChange}
             value={formik.values.firstName}
             name="firstName"
           />
+          {formik.errors.firstName ? (
+            <ErrorMessage>{formik.errors.firstName}</ErrorMessage>
+          ) : null}
 
           <Input
             placeholder="Last Name"
@@ -176,6 +184,10 @@ function Signup() {
             value={formik.values.lastName}
             name="lastName"
           />
+          {formik.errors.lastName ? (
+            <ErrorMessage>{formik.errors.lastName}</ErrorMessage>
+          ) : null}
+
           <Input
             placeholder="Username"
             onChange={formik.handleChange}
@@ -183,6 +195,10 @@ function Signup() {
             name="username"
             style={isUsernameError ? { border: "1px solid red" } : null}
           />
+          {formik.errors.username ? (
+            <ErrorMessage>{formik.errors.username}</ErrorMessage>
+          ) : null}
+
           {isUsernameError && (
             <ErrorMessage>Username already in use!</ErrorMessage>
           )}
@@ -194,6 +210,9 @@ function Signup() {
             type="password"
             autoComplete="off"
           />
+          {formik.errors.password ? (
+            <ErrorMessage>{formik.errors.password}</ErrorMessage>
+          ) : null}
           <Submit
             disabled={!(formik.isValid && formik.dirty)}
             type="submit"
