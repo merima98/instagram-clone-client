@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { NavLink, useHistory } from "react-router-dom";
 import { useFormik } from "formik";
@@ -107,11 +107,13 @@ function Signup() {
   const history = useHistory();
   const [isUsernameError, setIsUsernameError] = useState(false);
   const [isEmailError, setIsEmailError] = useState(false);
+  const setIsDarkMode = useDarkMode((state) => state.setIsDarkMode);
+  const isDarkMode = useDarkMode((state) => state.isDarkMode);
+  const setIsLoggedIn = useAuth((state) => state.setIsLoggedIn);
 
-  useEffect(() => {
-    setIsUsernameError(false);
-    setIsEmailError(false);
-  }, [setIsEmailError, setIsUsernameError]);
+  function onChange() {
+    setIsDarkMode(!isDarkMode);
+  }
 
   async function onSubmit(values) {
     try {
@@ -148,13 +150,6 @@ function Signup() {
     validationSchema,
   });
 
-  const setIsDarkMode = useDarkMode((state) => state.setIsDarkMode);
-  const isDarkMode = useDarkMode((state) => state.isDarkMode);
-  const setIsLoggedIn = useAuth((state) => state.setIsLoggedIn);
-
-  function onChange() {
-    setIsDarkMode(!isDarkMode);
-  }
   return (
     <Wrapper>
       <Container>
@@ -164,7 +159,7 @@ function Signup() {
             onChange={formik.handleChange}
             value={formik.values.email}
             name="email"
-            placeholder="Mobile Number or Email"
+            placeholder="Email"
             style={isEmailError ? { border: "1px solid red" } : null}
           />
           {isEmailError && <ErrorMessage>Email already in use!</ErrorMessage>}
@@ -197,6 +192,7 @@ function Signup() {
             value={formik.values.password}
             name="password"
             type="password"
+            autoComplete="off"
           />
           <Submit
             disabled={!(formik.isValid && formik.dirty)}
