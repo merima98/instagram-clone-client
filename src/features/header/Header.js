@@ -19,6 +19,7 @@ const StyledHeader = styled.div`
   @media (min-width: ${BREAKPOINTS.SMALL_DEVICES}) {
     justify-content: space-evenly;
   }
+  border-bottom: 1px solid ${(props) => props.theme.colors.headerBorder};
 `;
 
 const Title = styled(NavLink)`

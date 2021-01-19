@@ -13,6 +13,8 @@ export const darkTheme = {
     colorInput: "#fff",
     serachBackgroundColorInput: "#FAFAFA",
     serachBorderInput: "#DBDBDB",
+    headerBorder: "#DBDBDB",
+    footerBorder: "#DBDBDB",
   },
 };
 
@@ -31,5 +33,7 @@ export const lightTheme = {
     colorInput: "#000",
     serachBackgroundColorInput: "#FAFAFA",
     serachBorderInput: "#DBDBDB",
+    headerBorder: "#DBDBDB",
+    footerBorder: "#DBDBDB",
   },
 };

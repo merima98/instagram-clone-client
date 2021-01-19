@@ -18,6 +18,7 @@ const StyledFooter = styled.div`
   @media (min-width: ${BREAKPOINTS.SMALL_DEVICES}) {
     display: none;
   }
+  border-top: 1px solid ${(props) => props.theme.colors.footerBorder};
 `;
 
 const StyledNavLink = styled.div`
