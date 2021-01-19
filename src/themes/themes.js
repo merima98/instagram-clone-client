@@ -11,6 +11,8 @@ export const darkTheme = {
     styledLinkColor: "#0095f6",
     body: "#161B22",
     colorInput: "#fff",
+    serachBackgroundColorInput: "#FAFAFA",
+    serachBorderInput: "#DBDBDB",
   },
 };
 
@@ -27,5 +29,7 @@ export const lightTheme = {
     styledLinkColor: "#0095f6",
     body: "#fafafa",
     colorInput: "#000",
+    serachBackgroundColorInput: "#FAFAFA",
+    serachBorderInput: "#DBDBDB",
   },
 };
