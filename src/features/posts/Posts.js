@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 
 import { useAuth } from "../../state";
 import Header from "../header/Header";
+import Footer from "../footer/Footer";
 
 function Posts() {
   const history = useHistory();
@@ -17,6 +18,7 @@ function Posts() {
     <div style={{ padding: "60px" }}>
       <Header />
       <button onClick={onSubmit}>Log out</button>
+      <Footer />
     </div>
   );
 }

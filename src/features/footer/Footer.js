@@ -1,67 +1,57 @@
 import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
-import { Home, User, Send } from "react-feather";
+import { Home, User, Search, PlusSquare } from "react-feather";
 
-import SearchUserForm from "../user/SearchUserForm";
 import { BREAKPOINTS } from "../../constants";
 
-const StyledHeader = styled.div`
-  justify-content: start;
-  top: 0;
+const StyledFooter = styled.div`
+  bottom: 0;
   left: 0;
   right: 0;
   position: fixed;
   background-color: white;
   display: flex;
   flex-direction: row;
+  justify-content: space-evenly;
   padding: 10px;
   @media (min-width: ${BREAKPOINTS.SMALL_DEVICES}) {
-    justify-content: space-evenly;
+    display: none;
   }
 `;
 
-const Title = styled(NavLink)`
-  font-size: 1.2rem;
-  font-weight: bold;
-  text-decoration: none;
-  color: ${(props) => props.theme.colors.titleColor};
-  padding-top: 4px;
-`;
-
 const StyledNavLink = styled.div`
-  display: none;
+  display: block;
   @media (min-width: ${BREAKPOINTS.SMALL_DEVICES}) {
-    display: block;
+    display: none;
   }
 `;
 
 const Links = styled(NavLink)`
   text-decoration: none;
   color: ${(props) => props.theme.colors.titleColor};
-  margin-right: 1.2rem;
+  margin-right: 1rem;
 `;
 
-function Header() {
+function Footer() {
   return (
-    <StyledHeader>
-      <Title exact to="/">
-        worldgram
-      </Title>
-      <SearchUserForm />
+    <StyledFooter>
       <StyledNavLink>
         <Links exact to="/">
-          <Home />
+          <Home style={{ height: "16px", width: "16px" }} />
         </Links>
         <Links exact to="/">
-          <Send />
+          <Search style={{ height: "16px", width: "16px" }} />
         </Links>
         <Links exact to="/">
-          <User />
+          <PlusSquare style={{ height: "16px", width: "16px" }} />
+        </Links>
+        <Links exact to="/">
+          <User style={{ height: "16px", width: "16px" }} />
         </Links>
       </StyledNavLink>
-    </StyledHeader>
+    </StyledFooter>
   );
 }
 
-export default Header;
+export default Footer;
