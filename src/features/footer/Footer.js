@@ -44,7 +44,7 @@ function Footer() {
         <Links exact to="/">
           <Search style={{ height: "16px", width: "16px" }} />
         </Links>
-        <Links exact to="/">
+        <Links exact to="/addpost">
           <PlusSquare style={{ height: "16px", width: "16px" }} />
         </Links>
         <Links exact to="/">

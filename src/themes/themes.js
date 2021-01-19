@@ -15,6 +15,7 @@ export const darkTheme = {
     serachBorderInput: "#DBDBDB",
     headerBorder: "#DBDBDB",
     footerBorder: "#DBDBDB",
+    sharePostButton: "#0095F6",
   },
 };
 
@@ -35,5 +36,6 @@ export const lightTheme = {
     serachBorderInput: "#DBDBDB",
     headerBorder: "#DBDBDB",
     footerBorder: "#DBDBDB",
+    sharePostButton: "#0095F6",
   },
 };

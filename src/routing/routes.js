@@ -2,12 +2,18 @@ import Home from "../features/home/Home";
 import Login from "../features/login/Login";
 import Posts from "../features/posts/Posts";
 import Signup from "../features/signup/Signup";
+import NewPostForm from "../features/posts/NewPostForm";
 
 const LOGGED_IN_DEFAULT_LAYOUT_ROUTES = [
   {
     path: "/",
     exact: true,
     component: Posts,
+  },
+  {
+    path: "/addpost",
+    exact: true,
+    component: NewPostForm,
   },
 ];
 
