@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { ChevronLeft } from "react-feather";
 import { useHistory } from "react-router-dom";
 
+import { BREAKPOINTS } from "../../constants";
+
 const StyledHeader = styled.div`
   top: 0;
   left: 0;
@@ -30,8 +32,13 @@ const PostsContainer = styled.div`
   margin: 10rem auto;
   background-color: ${(props) => props.theme.colors.backgroundColor};
   border: 1px solid ${(props) => props.theme.colors.borderColor};
-  padding-top: 3rem;
-  padding-bottom: 3rem;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+  border-radius: 8px;
+  width: 80%;
+  @media (min-width: ${BREAKPOINTS.SMALL_DEVICES}) {
+    width: 50%;
+  }
 `;
 
 const Input = styled.input`
@@ -40,7 +47,7 @@ const Input = styled.input`
   font-size: 14px;
   padding: 9px 0px 7px 8px;
   outline: none;
-  border-radius: 4px;
+  border-radius: 16px;
   width: 80%;
   margin: 0 auto;
   margin-bottom: 1rem;
