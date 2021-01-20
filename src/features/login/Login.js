@@ -113,6 +113,7 @@ function Login() {
     try {
       const response = await mutations.signin(values);
       const token = response.data.token;
+      localStorage.setItem("user", JSON.stringify(response.data.user));
       history.push("/");
       setIsLoggedIn(true, token);
     } catch (err) {

@@ -123,6 +123,7 @@ function Signup() {
     try {
       const response = await mutations.signup(values);
       const token = response.data.token;
+      localStorage.setItem("user", JSON.stringify(response.data.user));
       history.push("/");
       setIsLoggedIn(true, token);
     } catch (err) {
