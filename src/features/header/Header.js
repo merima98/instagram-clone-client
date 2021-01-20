@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
-import { Home, User, Send, PlusSquare } from "react-feather";
+import { NavLink, useHistory } from "react-router-dom";
+import { Home, User, Send, PlusSquare, Moon, Sun } from "react-feather";
 
 import SearchUserForm from "../user/SearchUserForm";
 import { BREAKPOINTS } from "../../constants";
+import { useAuth, useDarkMode } from "../../state";
 
 const StyledHeader = styled.div`
   justify-content: start;
@@ -43,7 +44,55 @@ const Links = styled(NavLink)`
   margin-right: 1.2rem;
 `;
 
+const UserSyyledIcon = styled.span`
+  text-decoration: none;
+  color: ${(props) => props.theme.colors.titleColor};
+  margin-right: 1.2rem;
+  cursor: pointer;
+`;
+
+const StyledDropDown = styled.div`
+  position: absolute;
+  background-color: white;
+  list-style-type: none;
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  top: 3.2rem;
+  width: 25%;
+  @media (min-width: ${BREAKPOINTS.LARGE_DEVICES}) {
+    width: 15%;
+  }
+  border: 0.5px solid ${(props) => props.theme.colors.headerBorder};
+`;
+
+const StyledDropDownContent = styled.li`
+  font-size: 12px;
+  padding: 10px;
+  cursor: pointer;
+  width: 100%;
+  &:hover {
+    background-color: #fafafa;
+  }
+`;
 function Header() {
+  const [clicked, setIsClicked] = useState(false);
+  const setIsDarkMode = useDarkMode((state) => state.setIsDarkMode);
+  const isDarkMode = useDarkMode((state) => state.isDarkMode);
+  const history = useHistory();
+  const setIsLoggedIn = useAuth((state) => state.setIsLoggedIn);
+
+  function onChange() {
+    setIsDarkMode(!isDarkMode);
+  }
+  async function logout() {
+    const token = null;
+    history.push("/");
+    setIsLoggedIn(false, token);
+  }
+  function showDropDown() {
+    setIsClicked(!clicked);
+  }
+
   return (
     <StyledHeader>
       <Title exact to="/">
@@ -60,9 +109,45 @@ function Header() {
         <Links exact to="/addpost">
           <PlusSquare />
         </Links>
-        <Links exact to="/">
+        <UserSyyledIcon onClick={showDropDown}>
           <User />
-        </Links>
+        </UserSyyledIcon>
+        {clicked && (
+          <StyledDropDown>
+            <StyledDropDownContent>
+              <User
+                style={{ width: "12px", height: "12px", marginRight: "4px" }}
+              />
+              Profile
+            </StyledDropDownContent>
+            <StyledDropDownContent onClick={onChange}>
+              {" "}
+              {isDarkMode ? (
+                <Sun
+                  style={{
+                    cursor: "pointer",
+                    color: "#8B8D90",
+                    height: "12px",
+                    width: "12px",
+                  }}
+                />
+              ) : (
+                <Moon
+                  style={{
+                    cursor: "pointer",
+                    color: "#000",
+                    height: "12px",
+                    width: "12px",
+                  }}
+                />
+              )}{" "}
+              Change theme
+            </StyledDropDownContent>
+            <StyledDropDownContent onClick={logout}>
+              Log Out
+            </StyledDropDownContent>
+          </StyledDropDown>
+        )}
       </StyledNavLink>
     </StyledHeader>
   );
