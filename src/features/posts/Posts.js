@@ -10,12 +10,12 @@ import { BREAKPOINTS } from "../../constants";
 const PostsContainer = styled.div`
   display: grid;
   grid-template-rows: 1fr;
-
   padding-top: 54px;
-  width: 65%;
+  width: 100%;
   margin: 0 auto;
   @media (min-width: ${BREAKPOINTS.SMALL_DEVICES}) {
     grid-template-columns: 2fr 1fr;
+    width: 65%;
   }
 `;
 const UserInfoStyled = styled.div`
