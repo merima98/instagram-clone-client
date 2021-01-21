@@ -19,7 +19,7 @@ const Description = styled.div`
 `;
 const Image = styled.img`
   width: 100%;
-  height: 450px;
+  height: auto;
 `;
 function Post(props) {
   const { url, description } = props;
