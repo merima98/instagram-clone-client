@@ -22,24 +22,34 @@ const UserInfoStyled = styled.div`
   display: none;
   @media (min-width: ${BREAKPOINTS.SMALL_DEVICES}) {
     display: block;
-    padding: 40px;
+    padding-top: 2rem;
+    padding-left: 10rem;
   }
 `;
 
-const UserInfo = styled.div`
+const UserUsername = styled.div`
   position: fixed;
+  font-weight: bold;
+  cursor: pointer;
+`;
+
+const UserFullName = styled.div`
+  position: fixed;
+  color: #8e8e8e;
 `;
 
 function Posts() {
   const [posts, setPosts] = useState([]);
+  const [user, setUser] = useState({});
 
   useEffect(async () => {
     try {
       const response = await queries.posts();
       const data = await response.data;
       setPosts(data);
+      setUser(JSON.parse(localStorage.getItem("user")));
     } catch (err) {}
-  }, [setPosts]);
+  }, [setPosts, setUser]);
   return (
     <div>
       <Header />
@@ -51,13 +61,21 @@ function Posts() {
                 key={post.id}
                 url={post.url}
                 description={post.description}
+                username={post.user.username}
               />
             );
           })}
         </div>
-        <UserInfoStyled>
-          <UserInfo>username</UserInfo>
-        </UserInfoStyled>
+        <div>
+          <UserInfoStyled>
+            <UserUsername>{user.username}</UserUsername>
+          </UserInfoStyled>
+          <UserInfoStyled>
+            <UserFullName>
+              {user.firstName} {user.lastName}
+            </UserFullName>
+          </UserInfoStyled>
+        </div>
       </PostsContainer>
       <Footer />
     </div>

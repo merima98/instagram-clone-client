@@ -22,10 +22,10 @@ const Image = styled.img`
   height: auto;
 `;
 function Post(props) {
-  const { url, description } = props;
+  const { url, description, username } = props;
   return (
     <Wrapper>
-      <UserInfo>User</UserInfo>
+      <UserInfo>{username}</UserInfo>
       <Image src={`${url}`} />
       <Description>{description} </Description>
     </Wrapper>
