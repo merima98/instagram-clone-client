@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
@@ -46,6 +47,7 @@ function Posts() {
   const [posts, setPosts] = useState([]);
   const [user, setUser] = useState({});
   const [clickedLike, setClickedLike] = useState(false);
+  const history = useHistory();
 
   useEffect(async () => {
     try {
@@ -68,6 +70,11 @@ function Posts() {
       setPosts(response.data);
     }
   }
+
+  function showUserProfile() {
+    history.push(`/${user.username}`);
+  }
+
   return (
     <div>
       <Header />
@@ -90,7 +97,9 @@ function Posts() {
         </div>
         <div>
           <UserInfoStyled>
-            <UserUsername>{user.username}</UserUsername>
+            <UserUsername onClick={() => showUserProfile()}>
+              {user.username}
+            </UserUsername>
           </UserInfoStyled>
           <UserInfoStyled>
             <UserFullName>

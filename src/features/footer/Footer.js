@@ -35,6 +35,8 @@ const Links = styled(NavLink)`
 `;
 
 function Footer() {
+  const user = JSON.parse(localStorage.getItem("user"));
+
   return (
     <StyledFooter>
       <StyledNavLink>
@@ -44,10 +46,10 @@ function Footer() {
         <Links exact to="/">
           <Search style={{ height: "16px", width: "16px" }} />
         </Links>
-        <Links exact to="/addpost">
+        <Links exact to="/newPost">
           <PlusSquare style={{ height: "16px", width: "16px" }} />
         </Links>
-        <Links exact to="/">
+        <Links exact to={`/${user.username}`}>
           <User style={{ height: "16px", width: "16px" }} />
         </Links>
       </StyledNavLink>

@@ -106,7 +106,7 @@ function Header() {
         <Links exact to="/">
           <Send />
         </Links>
-        <Links exact to="/addpost">
+        <Links exact to="/newPost">
           <PlusSquare />
         </Links>
         <UserSyyledIcon onClick={showDropDown}>

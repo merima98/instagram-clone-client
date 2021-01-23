@@ -3,6 +3,7 @@ import Login from "../features/login/Login";
 import Posts from "../features/posts/Posts";
 import Signup from "../features/signup/Signup";
 import NewPostForm from "../features/posts/NewPostForm";
+import UserProfile from "../features/user/UserProfile";
 
 const LOGGED_IN_DEFAULT_LAYOUT_ROUTES = [
   {
@@ -11,9 +12,14 @@ const LOGGED_IN_DEFAULT_LAYOUT_ROUTES = [
     component: Posts,
   },
   {
-    path: "/addpost",
-    exact: true,
+    path: "/newPost",
+    exact: false,
     component: NewPostForm,
+  },
+  {
+    path: "/:username",
+    exact: false,
+    component: UserProfile,
   },
 ];
 

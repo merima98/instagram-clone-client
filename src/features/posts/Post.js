@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Heart } from "react-feather";
+import { useHistory } from "react-router-dom";
 
 const Wrapper = styled.div`
   background-color: white;
@@ -39,8 +40,7 @@ const Image = styled.img`
 const UserInfoDescription = styled.div`
   width: 100%;
   font-size: 14px;
-  cursor: pointer;
-  font-weight: bold;
+
   padding-left: 4px;
 `;
 
@@ -48,12 +48,21 @@ const Description = styled.span`
   font-weight: normal;
 `;
 
-function Post(props) {
-  const { url, description, username, likeCount } = props;
+const Username = styled.span`
+  cursor: pointer;
+  font-weight: bold;
+`;
 
+function Post(props) {
+  const history = useHistory();
+
+  const { url, description, username, likeCount } = props;
+  function showUserProfile() {
+    history.push(`/${username}`);
+  }
   return (
     <Wrapper>
-      <UserInfo>{username}</UserInfo>
+      <UserInfo onClick={() => showUserProfile()}>{username}</UserInfo>
       <Image src={`${url}`} />
       <PostInformations>
         <StyledLike>
@@ -65,7 +74,8 @@ function Post(props) {
         {likeCount > 0 && <StyledLikes>Liked by {likeCount} users</StyledLikes>}
         <StyledContainer>
           <UserInfoDescription>
-            {username} <Description> {description}</Description>
+            <Username onClick={() => showUserProfile()}>{username}</Username>{" "}
+            <Description> {description}</Description>
           </UserInfoDescription>
         </StyledContainer>
       </PostInformations>
