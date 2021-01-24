@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import queries from "../../api/queries";
-
+import Header from "../header/Header";
 const Wrapper = styled.div`
   margin: 0 auto;
   width: 80%;
@@ -30,6 +30,7 @@ function UserProfile() {
   }, [setUser]);
   return (
     <Wrapper>
+      <Header />
       <UserStyledInformation>
         <div>Image</div>
         <div>

@@ -10,7 +10,7 @@ const StyledFooter = styled.div`
   left: 0;
   right: 0;
   position: fixed;
-  background-color: white;
+  background-color: ${(props) => props.theme.colors.backgroundColor};
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;

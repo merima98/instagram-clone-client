@@ -17,7 +17,7 @@ const LOGGED_IN_DEFAULT_LAYOUT_ROUTES = [
     component: NewPostForm,
   },
   {
-    path: "/:username",
+    path: "/user/:username",
     exact: false,
     component: UserProfile,
   },

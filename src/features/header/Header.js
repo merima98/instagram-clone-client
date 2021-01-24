@@ -13,7 +13,7 @@ const StyledHeader = styled.div`
   left: 0;
   right: 0;
   position: fixed;
-  background-color: white;
+  background-color: ${(props) => props.theme.colors.backgroundColor};
   display: flex;
   flex-direction: row;
   padding: 10px;
@@ -53,7 +53,8 @@ const UserSyyledIcon = styled.span`
 
 const StyledDropDown = styled.div`
   position: absolute;
-  background-color: white;
+  background-color: ${(props) => props.theme.colors.backgroundColor};
+
   list-style-type: none;
   display: grid;
   grid-template-rows: repeat(2, 1fr);
@@ -69,9 +70,10 @@ const StyledDropDownContent = styled.li`
   font-size: 12px;
   padding: 10px;
   cursor: pointer;
+  color: ${(props) => props.theme.colors.titleColor};
   width: 100%;
   &:hover {
-    background-color: #fafafa;
+    background-color: ${(props) => props.theme.colors.body};
   }
 `;
 function Header() {

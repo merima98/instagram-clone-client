@@ -7,6 +7,7 @@ import * as Yup from "yup";
 
 import { BREAKPOINTS } from "../../constants";
 import mutations from "../../api/mutations";
+import { useDarkMode } from "../../state";
 
 const StyledHeader = styled.div`
   top: 0;
@@ -87,6 +88,7 @@ const validationSchema = Yup.object().shape({
 });
 
 function NewPostForm() {
+  const isDarkMode = useDarkMode((state) => state.isDarkMode);
   const history = useHistory();
   function onBack() {
     history.goBack();
@@ -109,31 +111,36 @@ function NewPostForm() {
     } catch (err) {}
   }
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <StyledHeader>
-        <ChevronLeft onClick={onBack} style={{ cursor: "pointer" }} />
-        <Title>New post</Title>
-        <Submit type="submit">Share</Submit>
-      </StyledHeader>
-      <PostsContainer>
-        <Input
-          name="description"
-          placeholder="Write a caption..."
-          onChange={formik.handleChange}
-          value={formik.values.description}
-        />
-        <Input
-          name="url"
-          placeholder="Image URL"
-          onChange={formik.handleChange}
-          value={formik.values.url}
-          error={formik.errors.url && formik.touched.url}
-        />
-        {formik.errors.url ? (
-          <ErrorMessage>{formik.errors.url}</ErrorMessage>
-        ) : null}
-      </PostsContainer>
-    </form>
+    <div>
+      <form onSubmit={formik.handleSubmit}>
+        <StyledHeader>
+          <ChevronLeft
+            onClick={onBack}
+            style={{ cursor: "pointer", color: isDarkMode ? "#fff" : "#000" }}
+          />
+          <Title>New post</Title>
+          <Submit type="submit">Share</Submit>
+        </StyledHeader>
+        <PostsContainer>
+          <Input
+            name="description"
+            placeholder="Write a caption..."
+            onChange={formik.handleChange}
+            value={formik.values.description}
+          />
+          <Input
+            name="url"
+            placeholder="Image URL"
+            onChange={formik.handleChange}
+            value={formik.values.url}
+            error={formik.errors.url && formik.touched.url}
+          />
+          {formik.errors.url ? (
+            <ErrorMessage>{formik.errors.url}</ErrorMessage>
+          ) : null}
+        </PostsContainer>
+      </form>
+    </div>
   );
 }
 

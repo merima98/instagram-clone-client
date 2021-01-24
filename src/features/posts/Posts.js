@@ -34,12 +34,13 @@ const UserUsername = styled.div`
   position: fixed;
   font-weight: bold;
   cursor: pointer;
+  color: ${(props) => props.theme.colors.titleColor};
   font-size: 14px;
 `;
 
 const UserFullName = styled.div`
   position: fixed;
-  color: #8e8e8e;
+  color: ${(props) => props.theme.colors.fullNameColor};
   font-size: 14px;
 `;
 
@@ -72,7 +73,7 @@ function Posts() {
   }
 
   function showUserProfile() {
-    history.push(`/${user.username}`);
+    history.push(`/user/${user.username}`);
   }
 
   return (

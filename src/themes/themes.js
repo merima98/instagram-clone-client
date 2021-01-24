@@ -11,11 +11,12 @@ export const darkTheme = {
     styledLinkColor: "#0095f6",
     body: "#161B22",
     colorInput: "#fff",
-    serachBackgroundColorInput: "#FAFAFA",
-    serachBorderInput: "#DBDBDB",
-    headerBorder: "#DBDBDB",
+    serachBackgroundColorInput: "#161B22",
+    serachBorderInput: "#8B8D90",
+    headerBorder: "#8B8D90",
     footerBorder: "#DBDBDB",
     sharePostButton: "#0095F6",
+    fullNameColor: "#8e8e8e",
   },
 };
 
@@ -37,5 +38,6 @@ export const lightTheme = {
     headerBorder: "#DBDBDB",
     footerBorder: "#DBDBDB",
     sharePostButton: "#0095F6",
+    fullNameColor: "#8e8e8e",
   },
 };
