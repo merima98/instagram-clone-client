@@ -1,0 +1,141 @@
+import React, { useState, useRef, useEffect } from "react";
+import { usePopper } from "react-popper";
+import styled from "styled-components";
+import { User, Moon, Sun } from "react-feather";
+import { useHistory, NavLink } from "react-router-dom";
+
+import { useAuth, useDarkMode } from "../../state";
+import { BREAKPOINTS } from "../../constants";
+
+const DropdownContainer = styled.div`
+  display: ${(props) => (props.visible ? "flex" : "none")};
+  position: ${(props) => (props.visible ? "fixed" : "none")};
+  width: 6rem;
+  left: 1rem;
+  @media (min-width: ${BREAKPOINTS.LARGE_DEVICES}) {
+    width: 8rem;
+    left: 0rem;
+  }
+  flex-direction: column;
+  border-radius: 4px;
+  border: 1px solid ${(props) => props.theme.colors.headerBorder};
+  background-color: ${(props) => props.theme.colors.backgroundColor};
+  padding: 5px;
+`;
+
+const StyledDropDownContent = styled.div`
+  font-size: 12px;
+  padding: 10px;
+  cursor: pointer;
+  color: ${(props) => props.theme.colors.titleColor};
+  width: 100%;
+  &:hover {
+    background-color: ${(props) => props.theme.colors.body};
+  }
+`;
+
+const UserProfile = styled(NavLink)`
+  text-decoration: none;
+  font-size: 12px;
+  padding: 10px;
+  cursor: pointer;
+  color: ${(props) => props.theme.colors.titleColor};
+  width: 100%;
+  &:hover {
+    background-color: ${(props) => props.theme.colors.body};
+  }
+`;
+
+function Popper() {
+  const setIsDarkMode = useDarkMode((state) => state.setIsDarkMode);
+  const isDarkMode = useDarkMode((state) => state.isDarkMode);
+  const history = useHistory();
+  const setIsLoggedIn = useAuth((state) => state.setIsLoggedIn);
+  const [user, setUser] = useState({});
+
+  function onChange() {
+    setIsDarkMode(!isDarkMode);
+  }
+  async function logout() {
+    const token = null;
+    history.push("/");
+    setIsLoggedIn(false, token);
+  }
+  const [visible, setVisibility] = useState(false);
+
+  const referenceRef = useRef(null);
+  const popperRef = useRef(null);
+
+  const { styles, attributes } = usePopper(
+    referenceRef.current,
+    popperRef.current,
+    {
+      placement: "bottom",
+      modifiers: [
+        {
+          name: "offset",
+          enabled: true,
+          options: {
+            offset: [-65, 15],
+          },
+        },
+      ],
+    }
+  );
+
+  useEffect(async () => {
+    try {
+      setUser(JSON.parse(localStorage.getItem("user")));
+    } catch (err) {}
+  }, [setUser]);
+
+  function handleDropdownClick() {
+    setVisibility(!visible);
+  }
+
+  return (
+    <span>
+      <User
+        onClick={handleDropdownClick}
+        ref={referenceRef}
+        style={{ color: isDarkMode ? "#fff" : "#000", cursor: "pointer" }}
+      />
+      <div ref={popperRef} style={styles.popper} {...attributes.popper}>
+        <DropdownContainer visible={visible}>
+          <UserProfile exact to={`/user/${user.username}`}>
+            <User
+              style={{ width: "12px", height: "12px", marginRight: "4px" }}
+            />
+            Profile
+          </UserProfile>
+          <StyledDropDownContent onClick={onChange}>
+            {isDarkMode ? (
+              <Sun
+                style={{
+                  cursor: "pointer",
+                  color: "#8B8D90",
+                  height: "12px",
+                  width: "12px",
+                }}
+              />
+            ) : (
+              <Moon
+                style={{
+                  cursor: "pointer",
+                  color: "#000",
+                  height: "12px",
+                  width: "12px",
+                }}
+              />
+            )}{" "}
+            Change theme
+          </StyledDropDownContent>
+          <StyledDropDownContent onClick={logout}>
+            Log Out
+          </StyledDropDownContent>
+        </DropdownContainer>
+      </div>
+    </span>
+  );
+}
+export default Popper;
