@@ -66,22 +66,17 @@ function Popper() {
   const referenceRef = useRef(null);
   const popperRef = useRef(null);
 
-  const { styles, attributes } = usePopper(
-    referenceRef.current,
-    popperRef.current,
-    {
-      placement: "bottom",
-      modifiers: [
-        {
-          name: "offset",
-          enabled: true,
-          options: {
-            offset: [-65, 15],
-          },
+  const { styles } = usePopper(referenceRef.current, popperRef.current, {
+    placement: "bottom",
+    modifiers: [
+      {
+        name: "offset",
+        options: {
+          offset: [-65, 17],
         },
-      ],
-    }
-  );
+      },
+    ],
+  });
 
   useEffect(async () => {
     try {
@@ -100,7 +95,7 @@ function Popper() {
         ref={referenceRef}
         style={{ color: isDarkMode ? "#fff" : "#000", cursor: "pointer" }}
       />
-      <div ref={popperRef} style={styles.popper} {...attributes.popper}>
+      <div ref={popperRef} style={styles.popper}>
         <DropdownContainer visible={visible}>
           <UserProfile exact to={`/user/${user.username}`}>
             <User
