@@ -51,18 +51,8 @@ function Popper() {
   const isDarkMode = useDarkMode((state) => state.isDarkMode);
   const history = useHistory();
   const setIsLoggedIn = useAuth((state) => state.setIsLoggedIn);
-  const [user, setUser] = useState({});
-
-  function onChange() {
-    setIsDarkMode(!isDarkMode);
-  }
-  async function logout() {
-    const token = null;
-    history.push("/");
-    setIsLoggedIn(false, token);
-  }
   const [visible, setVisibility] = useState(false);
-
+  const [user, setUser] = useState({});
   const referenceRef = useRef(null);
   const popperRef = useRef(null);
 
@@ -87,7 +77,14 @@ function Popper() {
   function handleDropdownClick() {
     setVisibility(!visible);
   }
-
+  function onChange() {
+    setIsDarkMode(!isDarkMode);
+  }
+  function logout() {
+    const token = null;
+    history.push("/");
+    setIsLoggedIn(false, token);
+  }
   return (
     <span>
       <User
