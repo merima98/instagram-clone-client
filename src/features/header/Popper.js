@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useClickAway } from "react-use";
 import { usePopper } from "react-popper";
 import styled from "styled-components";
 import { User, Moon, Sun } from "react-feather";
@@ -85,6 +86,10 @@ function Popper() {
     history.push("/");
     setIsLoggedIn(false, token);
   }
+  function onMouseEvent() {
+    setVisibility(false);
+  }
+  useClickAway(popperRef, onMouseEvent, ["mousedown"]);
   return (
     <span>
       <User

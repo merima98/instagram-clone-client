@@ -12,6 +12,7 @@
     "react-popper": "^2.2.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "1.1.5",
+    "react-use": "^15.3.8",
     "styled-components": "^5.2.1",
     "yup": "^0.32.8",
     "zustand": "^3.3.1"
