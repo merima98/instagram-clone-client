@@ -49,7 +49,7 @@ function Footer() {
         <Links exact to="/newPost">
           <PlusSquare style={{ height: "16px", width: "16px" }} />
         </Links>
-        <Links exact to={`/${user.username}`}>
+        <Links exact to={`/user/${user.username}`}>
           <User style={{ height: "16px", width: "16px" }} />
         </Links>
       </StyledNavLink>

@@ -74,10 +74,10 @@ function Popper() {
       setUser(JSON.parse(localStorage.getItem("user")));
     } catch (err) {}
   }, [setUser]);
-
   function handleDropdownClick() {
     setVisibility(!visible);
   }
+
   function onChange() {
     setIsDarkMode(!isDarkMode);
   }
@@ -89,6 +89,7 @@ function Popper() {
   function onMouseEvent() {
     setVisibility(false);
   }
+
   useClickAway(popperRef, onMouseEvent, ["mousedown"]);
   return (
     <span>

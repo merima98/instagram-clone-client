@@ -7,4 +7,8 @@ function user(username) {
   return axios.get(`/user?username=${username}`);
 }
 
-export default { posts, user };
+function usersPosts(username) {
+  return axios.get(`/userspost?username=${username}`);
+}
+
+export default { posts, user, usersPosts };
