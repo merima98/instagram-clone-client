@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
-import { Home, User, Search, PlusSquare } from "react-feather";
+import { Home, User, Search } from "react-feather";
 
 import { BREAKPOINTS } from "../../constants";
 
@@ -45,9 +45,6 @@ function Footer() {
         </Links>
         <Links exact to="/">
           <Search style={{ height: "16px", width: "16px" }} />
-        </Links>
-        <Links exact to="/newPost">
-          <PlusSquare style={{ height: "16px", width: "16px" }} />
         </Links>
         <Links exact to={`/user/${user.username}`}>
           <User style={{ height: "16px", width: "16px" }} />

@@ -8,6 +8,7 @@ import queries from "../../api/queries";
 import Post from "./Post";
 import { BREAKPOINTS } from "../../constants";
 import mutations from "../../api/mutations";
+import NewPostForm from "./NewPostForm";
 
 const PostsContainer = styled.div`
   display: grid;
@@ -81,6 +82,7 @@ function Posts() {
       <Header />
       <PostsContainer>
         <div>
+          <NewPostForm posts={posts} setPosts={setPosts} />
           {posts.map((post) => {
             return (
               <Post

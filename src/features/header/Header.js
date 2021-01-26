@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
-import { Home, Send, PlusSquare } from "react-feather";
+import { Home, Send } from "react-feather";
 
 import SearchUserForm from "../user/SearchUserForm";
 import { BREAKPOINTS } from "../../constants";
@@ -57,9 +57,6 @@ function Header() {
         </Links>
         <Links exact to="/">
           <Send />
-        </Links>
-        <Links exact to="/newPost">
-          <PlusSquare />
         </Links>
         <Popper />
       </StyledNavLink>

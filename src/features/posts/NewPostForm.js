@@ -1,48 +1,20 @@
 import React from "react";
 import styled from "styled-components";
-import { ChevronLeft } from "react-feather";
-import { useHistory } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-import { BREAKPOINTS } from "../../constants";
 import mutations from "../../api/mutations";
-import { useDarkMode } from "../../state";
-
-const StyledHeader = styled.div`
-  top: 0;
-  left: 0;
-  right: 0;
-  position: fixed;
-  background-color: ${(props) => props.theme.colors.backgroundColor};
-  display: flex;
-  flex-direction: row;
-  padding: 10px;
-  justify-content: space-evenly;
-  border-bottom: 1px solid ${(props) => props.theme.colors.headerBorder};
-`;
-
-const Title = styled.div`
-  color: ${(props) => props.theme.colors.titleColor};
-  background-color: ${(props) => props.theme.colors.backgroundColor};
-  font-weight: bold;
-  font-size: 0.8rem;
-  padding-top: 6px;
-`;
 
 const PostsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 10rem auto;
+  margin: 0 auto;
   background-color: ${(props) => props.theme.colors.backgroundColor};
   border: 1px solid ${(props) => props.theme.colors.borderColor};
   padding-top: 2rem;
   padding-bottom: 1rem;
   border-radius: 8px;
-  width: 80%;
-  @media (min-width: ${BREAKPOINTS.SMALL_DEVICES}) {
-    width: 50%;
-  }
+  margin-bottom: 1rem;
 `;
 
 const Input = styled.input`
@@ -87,13 +59,7 @@ const validationSchema = Yup.object().shape({
   url: Yup.string().required("Paste URL!"),
 });
 
-function NewPostForm() {
-  const isDarkMode = useDarkMode((state) => state.isDarkMode);
-  const history = useHistory();
-  function onBack() {
-    history.goBack();
-  }
-
+function NewPostForm(props) {
   const formik = useFormik({
     initialValues: {
       userId: JSON.parse(localStorage.getItem("user")).id,
@@ -106,21 +72,14 @@ function NewPostForm() {
 
   async function onSubmit(values) {
     try {
-      await mutations.createPost(values);
-      history.push("/");
+      const newPost = await mutations.createPost(values);
+      props.setPosts([newPost.data, ...props.posts]);
+      formik.resetForm();
     } catch (err) {}
   }
   return (
     <div>
       <form onSubmit={formik.handleSubmit}>
-        <StyledHeader>
-          <ChevronLeft
-            onClick={onBack}
-            style={{ cursor: "pointer", color: isDarkMode ? "#fff" : "#000" }}
-          />
-          <Title>New post</Title>
-          <Submit type="submit">Share</Submit>
-        </StyledHeader>
         <PostsContainer>
           <Input
             name="description"
@@ -138,6 +97,7 @@ function NewPostForm() {
           {formik.errors.url ? (
             <ErrorMessage>{formik.errors.url}</ErrorMessage>
           ) : null}
+          <Submit type="submit">Share</Submit>
         </PostsContainer>
       </form>
     </div>
