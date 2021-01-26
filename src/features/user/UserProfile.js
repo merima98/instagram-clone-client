@@ -16,8 +16,13 @@ const Image = styled.img`
   padding: 10px;
   border-radius: 50%;
   margin: 0 auto;
-  width: 150px;
-  height: 150px;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  @media (min-width: ${BREAKPOINTS.SMALL_DEVICES}) {
+    width: 150px;
+    height: 150px;
+  }
 `;
 const UserStyledInformation = styled.div`
   display: grid;
@@ -27,7 +32,6 @@ const UserStyledInformation = styled.div`
   border-bottom: 1px solid ${(props) => props.theme.colors.headerBorder};
   width: 100%;
   margin-bottom: 2rem;
-
   @media (min-width: ${BREAKPOINTS.SMALL_DEVICES}) {
     display: grid;
     grid-template-columns: 1fr 2fr;

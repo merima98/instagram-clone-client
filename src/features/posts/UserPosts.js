@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import queries from "../../api/queries.js";
-import { BREAKPOINTS } from "../../constants";
 
 const Wrapper = styled.div`
   display: grid;
@@ -11,11 +10,9 @@ const Wrapper = styled.div`
   grid-gap: 0.5rem;
 `;
 const Image = styled.img`
-  height: 120px;
+  object-fit: cover;
+  height: 20vw;
   width: 100%;
-  @media (min-width: ${BREAKPOINTS.SMALL_DEVICES}) {
-    height: 293px;
-  }
   cursor: pointer;
 `;
 
