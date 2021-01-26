@@ -25,11 +25,9 @@ function UserPosts(props) {
 
   useEffect(async () => {
     const response = await queries.usersPosts(username);
-    console.log("Posts of user are: ", response.data);
     setPosts(response.data);
   }, [username]);
 
-  console.log("Username is, ", username);
   return (
     <Wrapper>
       {posts.map((post) => {

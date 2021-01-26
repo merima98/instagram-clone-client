@@ -12,9 +12,12 @@ const Wrapper = styled.div`
   margin: 0 auto;
   width: 80%;
 `;
-const Image = styled.div`
-  padding: 30px;
-  color: ${(props) => props.theme.colors.titleColor};
+const Image = styled.img`
+  padding: 10px;
+  border-radius: 50%;
+  margin: 0 auto;
+  width: 150px;
+  height: 150px;
 `;
 const UserStyledInformation = styled.div`
   display: grid;
@@ -56,7 +59,7 @@ function UserProfile() {
     <Wrapper>
       <Header />
       <UserStyledInformation>
-        <Image>Image</Image>
+        <Image src={`${user.image}`} />
         <div>
           <Username>{user.username}</Username>
           <FullName>
