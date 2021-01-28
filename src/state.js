@@ -17,7 +17,7 @@ const useDarkMode = create((set) => ({
 }));
 
 const useAuth = create((set) => ({
-  isLoggedIn: window.localStorage.getItem("token") || false,
+  isLoggedIn: Boolean(window.localStorage.getItem("token")) || false,
   setIsLoggedIn: (value, token) => {
     if (value && token) {
       window.localStorage.setItem("token", token);

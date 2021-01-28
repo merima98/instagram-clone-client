@@ -4,6 +4,7 @@ import Posts from "../features/posts/Posts";
 import Signup from "../features/signup/Signup";
 import NewPostForm from "../features/posts/NewPostForm";
 import UserProfile from "../features/user/UserProfile";
+import UpdateUserProfile from "../features/user/UpdateUserProfile";
 
 const LOGGED_IN_DEFAULT_LAYOUT_ROUTES = [
   {
@@ -20,6 +21,11 @@ const LOGGED_IN_DEFAULT_LAYOUT_ROUTES = [
     path: "/user/:username",
     exact: false,
     component: UserProfile,
+  },
+  {
+    path: "/update/:username",
+    exact: false,
+    component: UpdateUserProfile,
   },
 ];
 

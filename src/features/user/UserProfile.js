@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 import queries from "../../api/queries";
@@ -48,10 +48,31 @@ const FullName = styled.div`
   font-weight: bold;
 `;
 
+const StyledUpdate = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const StyledButton = styled.button`
+  background-color: ${(props) => props.theme.colors.body};
+  outline: none;
+  color: ${(props) => props.theme.colors.titleColor};
+  border: 1px solid ${(props) => props.theme.colors.headerBorder};
+  border-radius: 2px;
+  padding: 2.5px;
+  cursor: pointer;
+`;
+
 function UserProfile() {
+  const history = useHistory();
   const params = useParams();
   const username = params.username;
   const [user, setUser] = useState({});
+
+  function showUpdatePage() {
+    history.push(`/update/${username}`);
+  }
 
   useEffect(async () => {
     try {
@@ -65,7 +86,12 @@ function UserProfile() {
       <UserStyledInformation>
         <Image src={`${user.image}`} />
         <div>
-          <Username>{user.username}</Username>
+          <StyledUpdate>
+            <Username>{user.username}</Username>
+            <StyledButton onClick={() => showUpdatePage()}>
+              Edit Profile
+            </StyledButton>
+          </StyledUpdate>
           <FullName>
             {user.firstName} {user.lastName}
           </FullName>

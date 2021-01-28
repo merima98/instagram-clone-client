@@ -114,8 +114,8 @@ function Login() {
       const response = await mutations.signin(values);
       const token = response.data.token;
       localStorage.setItem("user", JSON.stringify(response.data.user));
-      history.push("/");
       setIsLoggedIn(true, token);
+      history.push("/");
     } catch (err) {
       if (err.response.data.exception === "UserNotFound") {
         formik.setErrors({ password: "Username or password is incorrect!" });

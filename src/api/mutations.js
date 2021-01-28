@@ -8,6 +8,10 @@ function signin(credentials) {
   return axios.post(`/signin`, credentials);
 }
 
+function updateUser(values) {
+  return axios.put(`/updateUser`, values);
+}
+
 function createPost(values) {
   return axios.post("/post", values);
 }
@@ -20,4 +24,11 @@ function dislikePost(postId, userId) {
   return axios.post(`/dislike?postId=${postId}&userId=${userId}`);
 }
 
-export default { signup, signin, createPost, likePost, dislikePost };
+export default {
+  signup,
+  signin,
+  createPost,
+  likePost,
+  dislikePost,
+  updateUser,
+};

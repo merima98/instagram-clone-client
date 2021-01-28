@@ -18,6 +18,7 @@ function App() {
   const defaultLayoutPaths = LOGGED_IN_DEFAULT_LAYOUT_ROUTES.map(
     (item) => item.path
   );
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
