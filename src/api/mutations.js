@@ -16,12 +16,12 @@ function createPost(values) {
   return axios.post("/post", values);
 }
 
-function likePost(postId, userId) {
-  return axios.post(`/like?postId=${postId}&userId=${userId}`);
+function likePost(postId) {
+  return axios.post(`/like?postId=${postId}`);
 }
 
-function dislikePost(postId, userId) {
-  return axios.post(`/dislike?postId=${postId}&userId=${userId}`);
+function dislikePost(postId) {
+  return axios.post(`/dislike?postId=${postId}`);
 }
 
 export default {

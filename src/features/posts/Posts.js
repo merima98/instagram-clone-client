@@ -61,14 +61,15 @@ function Posts() {
   }, [setPosts, setUser]);
 
   async function likePost(postId) {
-    if (!clickedLike) {
-      const response = await mutations.likePost(postId, user.id);
-      setClickedLike(!clickedLike);
+    if (clickedLike === false) {
+      setClickedLike(true);
+      const response = await mutations.likePost(postId);
+
       setPosts(response.data);
     }
-    if (clickedLike) {
-      const response = await mutations.dislikePost(postId, user.id);
-      setClickedLike(!clickedLike);
+    if (clickedLike === true) {
+      setClickedLike(false);
+      const response = await mutations.dislikePost(postId);
       setPosts(response.data);
     }
   }

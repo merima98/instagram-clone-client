@@ -62,7 +62,6 @@ const validationSchema = Yup.object().shape({
 function NewPostForm(props) {
   const formik = useFormik({
     initialValues: {
-      userId: JSON.parse(localStorage.getItem("user")).id,
       url: "",
       description: "",
     },
