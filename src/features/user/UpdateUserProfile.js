@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
 import { BREAKPOINTS } from "../../constants";
+import queries from "../../api/queries.js";
 
 const Container = styled.div`
   padding-top: 4rem;
@@ -108,18 +109,7 @@ const validationSchema = Yup.object().shape({
   image: Yup.string().required("Paste URL!"),
 });
 function UpdateUserProfile() {
-  const formik = useFormik({
-    initialValues: {
-      id: "",
-      email: "",
-      username: "",
-      firstName: "",
-      lastName: "",
-      image: "",
-    },
-    validationSchema,
-    onSubmit: onSubmit,
-  });
+  const [user, setUser] = useState({});
 
   async function onSubmit(values) {
     try {
@@ -138,6 +128,24 @@ function UpdateUserProfile() {
       }
     }
   }
+
+  useEffect(async () => {
+    const response = await queries.loggedUser();
+    setUser(response.data);
+  }, [setUser]);
+
+  const formik = useFormik({
+    initialValues: {
+      email: user.email,
+      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      image: user.image,
+    },
+    validationSchema,
+    onSubmit: onSubmit,
+    enableReinitialize: true,
+  });
   return (
     <div>
       <Header />
@@ -147,11 +155,11 @@ function UpdateUserProfile() {
             <Text>First name</Text>
             <Input
               onChange={formik.handleChange}
-              value={formik.values.firstName}
+              value={formik.values.firstName || ""}
               name="firstName"
             />
             {formik.errors.firstName ? (
-              <ErrorMessage>{formik.errors.firstName}</ErrorMessage>
+              <ErrorMessage>{formik.errors.firstName || ""}</ErrorMessage>
             ) : null}
           </UserContainer>
 
@@ -159,7 +167,7 @@ function UpdateUserProfile() {
             <Text>Last name</Text>
             <Input
               onChange={formik.handleChange}
-              value={formik.values.lastName}
+              value={formik.values.lastName || ""}
               name="lastName"
             />
             {formik.errors.lastName ? (
@@ -171,7 +179,7 @@ function UpdateUserProfile() {
             <Text>Username</Text>
             <Input
               onChange={formik.handleChange}
-              value={formik.values.username}
+              value={formik.values.username || ""}
               name="username"
               error={formik.errors.username && formik.touched.username}
             />
@@ -184,7 +192,7 @@ function UpdateUserProfile() {
             <Text>Email</Text>
             <Input
               onChange={formik.handleChange}
-              value={formik.values.email}
+              value={formik.values.email || ""}
               name="email"
               error={formik.errors.email && formik.touched.email}
             />
@@ -197,7 +205,7 @@ function UpdateUserProfile() {
             <Text>Image</Text>
             <Input
               onChange={formik.handleChange}
-              value={formik.values.image}
+              value={formik.values.image || ""}
               name="image"
               error={formik.errors.url && formik.touched.url}
             />
@@ -222,7 +230,6 @@ function UpdateUserProfile() {
           </UserContainer>
         </Form>
       </Container>
-
       <Footer />
     </div>
   );

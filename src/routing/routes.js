@@ -23,7 +23,7 @@ const LOGGED_IN_DEFAULT_LAYOUT_ROUTES = [
     component: UserProfile,
   },
   {
-    path: "/update/:username",
+    path: "/update",
     exact: false,
     component: UpdateUserProfile,
   },

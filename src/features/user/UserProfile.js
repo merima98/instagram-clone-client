@@ -71,7 +71,7 @@ function UserProfile() {
   const [user, setUser] = useState({});
 
   function showUpdatePage() {
-    history.push(`/update/${username}`);
+    history.push(`/update`);
   }
 
   useEffect(async () => {
