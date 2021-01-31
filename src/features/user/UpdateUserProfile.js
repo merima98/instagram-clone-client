@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useFormik } from "formik";
+import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
 import { BREAKPOINTS } from "../../constants";
 import queries from "../../api/queries.js";
+import mutations from "../../api/mutations.js";
 
 const Container = styled.div`
   padding-top: 4rem;
@@ -58,11 +60,9 @@ const Input = styled.input`
   border-radius: 4px;
   border: 0.5px solid ${(props) => props.theme.colors.colorInputBorder};
   outline: none;
-
   @media (min-width: ${BREAKPOINTS.SMALL_DEVICES}) {
     width: 90%;
   }
-
   color: ${(props) => props.theme.colors.colorInput};
   ${({ error }) =>
     error &&
@@ -110,9 +110,13 @@ const validationSchema = Yup.object().shape({
 });
 function UpdateUserProfile() {
   const [user, setUser] = useState({});
+  const history = useHistory();
 
   async function onSubmit(values) {
     try {
+      const response = await mutations.updateUser(values);
+      setUser(response.data);
+      history.push(`/user/${response.data.username}`);
     } catch (err) {
       if (
         err.response.data.exception === "UsernameAllreadyInUseException" &&

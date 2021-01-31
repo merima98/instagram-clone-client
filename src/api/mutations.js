@@ -9,7 +9,7 @@ function signin(credentials) {
 }
 
 function updateUser(values) {
-  return axios.put(`/updateUser`, values);
+  return axios.patch(`/update`, values);
 }
 
 function createPost(values) {
