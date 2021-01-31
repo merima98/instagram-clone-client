@@ -7,6 +7,7 @@ import { useHistory, NavLink } from "react-router-dom";
 
 import { useAuth, useDarkMode } from "../../state";
 import { BREAKPOINTS } from "../../constants";
+import queries from "../../api/queries.js";
 
 const DropdownContainer = styled.div`
   display: ${(props) => (props.visible ? "flex" : "none")};
@@ -53,9 +54,14 @@ function Popper() {
   const history = useHistory();
   const setIsLoggedIn = useAuth((state) => state.setIsLoggedIn);
   const [visible, setVisibility] = useState(false);
-  const [user, setUser] = useState({});
   const referenceRef = useRef(null);
   const popperRef = useRef(null);
+  const [user, setUser] = useState({});
+
+  useEffect(async () => {
+    const response = await queries.loggedUser();
+    setUser(response.data);
+  }, [setUser]);
 
   const { styles } = usePopper(referenceRef.current, popperRef.current, {
     placement: "bottom",
@@ -69,11 +75,6 @@ function Popper() {
     ],
   });
 
-  useEffect(async () => {
-    try {
-      setUser(JSON.parse(localStorage.getItem("user")));
-    } catch (err) {}
-  }, [setUser]);
   function handleDropdownClick() {
     setVisibility(!visible);
   }

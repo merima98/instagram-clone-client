@@ -56,7 +56,8 @@ function Posts() {
       const response = await queries.posts();
       const data = await response.data;
       setPosts(data);
-      setUser(JSON.parse(localStorage.getItem("user")));
+      const userResponse = await queries.loggedUser();
+      setUser(userResponse.data);
     } catch (err) {}
   }, [setPosts, setUser]);
 

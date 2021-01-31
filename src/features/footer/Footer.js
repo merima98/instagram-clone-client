@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { Home, User, Search } from "react-feather";
 
 import { BREAKPOINTS } from "../../constants";
+import queries from "../../api/queries.js";
 
 const StyledFooter = styled.div`
   bottom: 0;
@@ -35,7 +36,12 @@ const Links = styled(NavLink)`
 `;
 
 function Footer() {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const [user, setUser] = useState({});
+
+  useEffect(async () => {
+    const response = await queries.loggedUser();
+    setUser(response.data);
+  }, [setUser]);
 
   return (
     <StyledFooter>
