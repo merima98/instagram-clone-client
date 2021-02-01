@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
-import { Home, User, Search } from "react-feather";
+import { NavLink, useHistory } from "react-router-dom";
+import { Home, User, Search, Moon, Sun, LogOut } from "react-feather";
 
 import { BREAKPOINTS } from "../../constants";
+import { useAuth, useDarkMode } from "../../state";
 import queries from "../../api/queries.js";
 
 const StyledFooter = styled.div`
@@ -35,14 +36,33 @@ const Links = styled(NavLink)`
   margin-right: 1rem;
 `;
 
+const StyledTheme = styled.span`
+  text-decoration: none;
+  color: ${(props) => props.theme.colors.titleColor};
+  margin-right: 1rem;
+`;
+
 function Footer() {
   const [user, setUser] = useState({});
+  const setIsDarkMode = useDarkMode((state) => state.setIsDarkMode);
+  const isDarkMode = useDarkMode((state) => state.isDarkMode);
+  const history = useHistory();
+  const setIsLoggedIn = useAuth((state) => state.setIsLoggedIn);
 
   useEffect(async () => {
     const response = await queries.loggedUser();
     setUser(response.data);
   }, [setUser]);
 
+  function onChange() {
+    setIsDarkMode(!isDarkMode);
+  }
+
+  function logout() {
+    const token = null;
+    history.push("/");
+    setIsLoggedIn(false, token);
+  }
   return (
     <StyledFooter>
       <StyledNavLink>
@@ -55,6 +75,30 @@ function Footer() {
         <Links exact to={`/user/${user.username}`}>
           <User style={{ height: "16px", width: "16px" }} />
         </Links>
+        <StyledTheme onClick={onChange}>
+          {isDarkMode ? (
+            <Sun
+              style={{
+                cursor: "pointer",
+                height: "16px",
+                width: "16px",
+              }}
+            />
+          ) : (
+            <Moon
+              style={{
+                cursor: "pointer",
+                height: "16px",
+                width: "16px",
+              }}
+            />
+          )}
+        </StyledTheme>
+        <StyledTheme onClick={logout}>
+          <LogOut
+            style={{ height: "16px", width: "16px", cursor: "pointer" }}
+          />
+        </StyledTheme>
       </StyledNavLink>
     </StyledFooter>
   );
