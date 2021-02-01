@@ -69,6 +69,8 @@ function UserProfile() {
   const params = useParams();
   const username = params.username;
   const [user, setUser] = useState({});
+  const [loggedUser, setLoggedUser] = useState({});
+  const [showEdit, setShowEdit] = useState(false);
 
   function showUpdatePage() {
     history.push(`/update`);
@@ -78,6 +80,11 @@ function UserProfile() {
     try {
       const response = await queries.user(username);
       setUser(response.data);
+      const responseLoggedUser = await queries.loggedUser();
+      setLoggedUser(responseLoggedUser.data);
+      if (response.data.username === responseLoggedUser.data.username) {
+        setShowEdit(true);
+      }
     } catch (err) {}
   }, [setUser]);
   return (
@@ -88,9 +95,11 @@ function UserProfile() {
         <div>
           <StyledUpdate>
             <Username>{user.username}</Username>
-            <StyledButton onClick={() => showUpdatePage()}>
-              Edit Profile
-            </StyledButton>
+            {showEdit && (
+              <StyledButton onClick={() => showUpdatePage()}>
+                Edit Profile
+              </StyledButton>
+            )}
           </StyledUpdate>
           <FullName>
             {user.firstName} {user.lastName}
