@@ -123,8 +123,8 @@ function Signup() {
     try {
       const response = await mutations.signup(values);
       const token = response.data.token;
-      history.push("/");
       setIsLoggedIn(true, token);
+      history.push("/");
     } catch (err) {
       if (
         err.response.data.exception === "UsernameAllreadyInUseException" &&
