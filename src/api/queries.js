@@ -3,6 +3,10 @@ import axios from "../httpClient";
 function posts() {
   return axios.get(`/post`);
 }
+function randomPosts() {
+  return axios.get(`/randomPosts`);
+}
+
 function user(username) {
   return axios.get(`/user?username=${username}`);
 }
@@ -15,4 +19,4 @@ function usersPosts(username) {
   return axios.get(`/userspost?username=${username}`);
 }
 
-export default { posts, user, usersPosts, loggedUser };
+export default { posts, user, usersPosts, loggedUser, randomPosts };

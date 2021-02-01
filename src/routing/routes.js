@@ -3,6 +3,7 @@ import Login from "../features/login/Login";
 import Posts from "../features/posts/Posts";
 import Signup from "../features/signup/Signup";
 import NewPostForm from "../features/posts/NewPostForm";
+import RandomPosts from "../features/posts/RandomPosts";
 import UserProfile from "../features/user/UserProfile";
 import UpdateUserProfile from "../features/user/UpdateUserProfile";
 
@@ -26,6 +27,11 @@ const LOGGED_IN_DEFAULT_LAYOUT_ROUTES = [
     path: "/update",
     exact: false,
     component: UpdateUserProfile,
+  },
+  {
+    path: "/randomPosts",
+    exact: false,
+    component: RandomPosts,
   },
 ];
 

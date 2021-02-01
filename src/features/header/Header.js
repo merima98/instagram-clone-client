@@ -55,7 +55,7 @@ function Header() {
         <Links exact to="/">
           <Home />
         </Links>
-        <Links exact to="/">
+        <Links exact to="/randomPosts">
           <Send />
         </Links>
         <Popper />
