@@ -9,6 +9,7 @@ import Post from "./Post";
 import { BREAKPOINTS } from "../../constants";
 import mutations from "../../api/mutations";
 import NewPostForm from "./NewPostForm";
+import Spinner from "../spinner/Spinner";
 
 const PostsContainer = styled.div`
   display: grid;
@@ -50,6 +51,7 @@ function Posts() {
   const [user, setUser] = useState({});
   const [clickedLike, setClickedLike] = useState(false);
   const history = useHistory();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(async () => {
     try {
@@ -58,6 +60,7 @@ function Posts() {
       setPosts(data);
       const userResponse = await queries.loggedUser();
       setUser(userResponse.data);
+      setIsLoading(false);
     } catch (err) {}
   }, [setPosts, setUser]);
 
@@ -65,7 +68,6 @@ function Posts() {
     if (clickedLike === false) {
       setClickedLike(true);
       const response = await mutations.likePost(postId);
-
       setPosts(response.data);
     }
     if (clickedLike === true) {
@@ -85,20 +87,26 @@ function Posts() {
       <PostsContainer>
         <div>
           <NewPostForm posts={posts} setPosts={setPosts} />
-          {posts.map((post) => {
-            return (
-              <Post
-                key={post.id}
-                url={post.url}
-                description={post.description}
-                username={post.user.username}
-                likeCount={post.likes.length}
-                userId={user.id}
-                postId={post.id}
-                likePost={() => likePost(post.id)}
-              />
-            );
-          })}
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            <div>
+              {posts.map((post) => {
+                return (
+                  <Post
+                    key={post.id}
+                    url={post.url}
+                    description={post.description}
+                    username={post.user.username}
+                    likeCount={post.likes.length}
+                    userId={user.id}
+                    postId={post.id}
+                    likePost={() => likePost(post.id)}
+                  />
+                );
+              })}{" "}
+            </div>
+          )}
         </div>
         <div>
           <UserInfoStyled>

@@ -17,6 +17,7 @@ export const darkTheme = {
     footerBorder: "#DBDBDB",
     sharePostButton: "#0095F6",
     fullNameColor: "#8e8e8e",
+    spinner: "#0095f6",
   },
 };
 
@@ -39,5 +40,6 @@ export const lightTheme = {
     footerBorder: "#DBDBDB",
     sharePostButton: "#0095F6",
     fullNameColor: "#8e8e8e",
+    spinner: "#0095f6",
   },
 };

@@ -69,7 +69,6 @@ function UserProfile() {
   const params = useParams();
   const username = params.username;
   const [user, setUser] = useState({});
-  const [loggedUser, setLoggedUser] = useState({});
   const [showEdit, setShowEdit] = useState(false);
 
   function showUpdatePage() {
@@ -81,7 +80,6 @@ function UserProfile() {
       const response = await queries.user(username);
       setUser(response.data);
       const responseLoggedUser = await queries.loggedUser();
-      setLoggedUser(responseLoggedUser.data);
       if (response.data.username === responseLoggedUser.data.username) {
         setShowEdit(true);
       }
