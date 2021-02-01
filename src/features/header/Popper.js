@@ -29,6 +29,7 @@ const StyledDropDownContent = styled.div`
   font-size: 12px;
   padding: 10px;
   cursor: pointer;
+  z-index: 1;
   color: ${(props) => props.theme.colors.titleColor};
   width: 100%;
   &:hover {
@@ -40,6 +41,7 @@ const UserProfile = styled(NavLink)`
   text-decoration: none;
   font-size: 12px;
   padding: 10px;
+  z-index: 1;
   cursor: pointer;
   color: ${(props) => props.theme.colors.titleColor};
   width: 100%;

@@ -27,21 +27,23 @@ const UserInfoStyled = styled.div`
   display: none;
   @media (min-width: ${BREAKPOINTS.SMALL_DEVICES}) {
     display: block;
+    position: fixed;
+    white-space: normal;
     padding-left: 50px;
     padding-top: 40px;
+    z-index: -1;
   }
 `;
 
 const UserUsername = styled.div`
-  position: fixed;
   font-weight: bold;
   cursor: pointer;
+  margin-bottom: 0.5rem;
   color: ${(props) => props.theme.colors.titleColor};
   font-size: 14px;
 `;
 
 const UserFullName = styled.div`
-  position: fixed;
   color: ${(props) => props.theme.colors.fullNameColor};
   font-size: 14px;
 `;
@@ -104,7 +106,7 @@ function Posts() {
                     likePost={() => likePost(post.id)}
                   />
                 );
-              })}{" "}
+              })}
             </div>
           )}
         </div>
@@ -113,8 +115,6 @@ function Posts() {
             <UserUsername onClick={() => showUserProfile()}>
               {user.username}
             </UserUsername>
-          </UserInfoStyled>
-          <UserInfoStyled>
             <UserFullName>
               {user.firstName} {user.lastName}
             </UserFullName>
