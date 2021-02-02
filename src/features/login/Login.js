@@ -1,11 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { NavLink, useHistory } from "react-router-dom";
-import { Moon, Sun } from "react-feather";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-import { useDarkMode, useAuth } from "../../state";
+import { useAuth } from "../../state";
 import mutations from "../../api/mutations";
 
 const Wrapper = styled.div`
@@ -100,14 +99,8 @@ const validationSchema = Yup.object().shape({
 });
 
 function Login() {
-  const setIsDarkMode = useDarkMode((state) => state.setIsDarkMode);
-  const isDarkMode = useDarkMode((state) => state.isDarkMode);
   const history = useHistory();
   const setIsLoggedIn = useAuth((state) => state.setIsLoggedIn);
-
-  function onChange() {
-    setIsDarkMode(!isDarkMode);
-  }
 
   async function onSubmit(values) {
     try {
@@ -175,27 +168,6 @@ function Login() {
         <Label>
           Don't have an account?
           <StyledLink to="/signup"> Sign up </StyledLink>
-          {isDarkMode ? (
-            <Sun
-              style={{
-                cursor: "pointer",
-                color: "#8B8D90",
-                height: "14px",
-                width: "14px",
-              }}
-              onClick={onChange}
-            />
-          ) : (
-            <Moon
-              style={{
-                cursor: "pointer",
-                color: "#8B8D90",
-                height: "14px",
-                width: "14px",
-              }}
-              onClick={onChange}
-            />
-          )}
         </Label>
       </SideContainer>
     </Wrapper>

@@ -114,7 +114,6 @@ function Popper() {
               <Sun
                 style={{
                   cursor: "pointer",
-                  color: "#8B8D90",
                   height: "12px",
                   width: "12px",
                 }}
@@ -123,7 +122,6 @@ function Popper() {
               <Moon
                 style={{
                   cursor: "pointer",
-                  color: "#000",
                   height: "12px",
                   width: "12px",
                 }}
