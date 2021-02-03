@@ -50,6 +50,7 @@ const FullName = styled.div`
 
 const StyledUpdate = styled.div`
   display: flex;
+  overflow-wrap: anywhere;
   flex-direction: row;
   align-items: center;
 `;

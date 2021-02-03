@@ -4,7 +4,7 @@ import styled from "styled-components";
 import queries from "../../api/queries.js";
 import DeletePost from "./DeletePost.js";
 const Wrapper = styled.div`
-  display: grid;
+  display: ${(props) => (props.showAll ? "grid" : "flex")};
   grid-template-columns: repeat(3, 1fr);
   justify-content: center;
   grid-gap: 0.5rem;
@@ -22,12 +22,14 @@ function UserPosts(props) {
   const [post, setPost] = useState([]);
   const [user, setUser] = useState([]);
   const [clicked, setClicked] = useState(false);
+  const [showAll, setShowAll] = useState(true);
   useEffect(async () => {
     const response = await queries.usersPosts(username);
     setPosts(response.data);
   }, [username, setPost, setClicked]);
   async function showLargerImage(postId) {
     setClicked(true);
+    setShowAll(false);
     const response = await queries.getPostById(postId);
     if (post) {
       setPost(response.data);
@@ -35,16 +37,17 @@ function UserPosts(props) {
     }
   }
   return (
-    <Wrapper>
-      {posts.map((post) => {
-        return (
-          <Image
-            key={post.id}
-            src={post.url}
-            onClick={() => showLargerImage(post.id)}
-          />
-        );
-      })}
+    <Wrapper showAll={showAll}>
+      {showAll &&
+        posts.map((post) => {
+          return (
+            <Image
+              key={post.id}
+              src={post.url}
+              onClick={() => showLargerImage(post.id)}
+            />
+          );
+        })}
       {clicked && props.loggedUser === user.username && (
         <DeletePost
           key={post.id}
@@ -57,6 +60,8 @@ function UserPosts(props) {
           setPosts={setPosts}
           clicked={clicked}
           setClicked={setClicked}
+          showAll={showAll}
+          setShowAll={setShowAll}
         />
       )}
     </Wrapper>
