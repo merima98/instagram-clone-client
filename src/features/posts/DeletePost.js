@@ -1,15 +1,20 @@
 import React from "react";
 import styled from "styled-components";
-import { Heart } from "react-feather";
 import { useHistory } from "react-router-dom";
+import { Trash, ChevronLeft } from "react-feather";
 
-import { useDarkMode } from "../../state";
+import mutations from "../../api/mutations.js";
 
 const Wrapper = styled.div`
+  position: fixed;
+  margin: 0 25%;
   background-color: ${(props) => props.theme.colors.backgroundColor};
   border-radius: 8px;
-  margin-bottom: 1rem;
   border: 1px solid ${(props) => props.theme.colors.headerBorder};
+`;
+
+const StyledPhotoHeader = styled.div`
+  display: flex;
 `;
 const UserInfo = styled.div`
   width: 100%;
@@ -20,22 +25,12 @@ const UserInfo = styled.div`
   color: ${(props) => props.theme.colors.titleColor};
 `;
 
-const PostInformations = styled.div``;
-const StyledLike = styled.div`
-  width: 100%;
-  padding: 10px;
-`;
 const StyledContainer = styled.div`
   width: 100%;
   padding: 10px;
   font-size: 14px;
 `;
-const StyledLikes = styled.div`
-  width: 100%;
-  padding-left: 14px;
-  font-size: 12px;
-  color: ${(props) => props.theme.colors.titleColor};
-`;
+
 const Image = styled.img`
   width: 100%;
   height: auto;
@@ -58,41 +53,52 @@ const Username = styled.span`
   color: ${(props) => props.theme.colors.titleColor};
 `;
 
-function Post(props) {
+function DeletePost(props) {
   const history = useHistory();
-  const isDarkMode = useDarkMode((state) => state.isDarkMode);
-
-  const { url, description, username, likeCount } = props;
+  const { url, description, username, postId } = props;
   function showUserProfile() {
     history.push(`/user/${username}`);
   }
 
+  async function deletePost() {
+    await mutations.deletePostsFromLikes(postId);
+    const post = await mutations.deletePost(postId);
+    props.setClicked(false);
+    props.setPosts(post.data);
+  }
+
+  function goBack() {
+    props.setClicked(false);
+  }
+
   return (
     <Wrapper>
-      <UserInfo onClick={() => showUserProfile()}>{username}</UserInfo>
-      <Image src={`${url}`} />
-      <PostInformations>
-        <StyledLike>
-          <Heart
-            style={{
-              height: "20px",
-              width: "20px",
-              cursor: "pointer",
-              color: isDarkMode ? "#fff" : "#000",
-            }}
-            onClick={props.likePost}
+      <StyledPhotoHeader>
+        <UserInfo>
+          <ChevronLeft
+            style={{ height: "14px", width: "14px" }}
+            onClick={() => goBack()}
           />
-        </StyledLike>
-        {likeCount > 0 && <StyledLikes>Liked by {likeCount} users</StyledLikes>}
+        </UserInfo>
+        <UserInfo onClick={() => showUserProfile()}>{username}</UserInfo>
+        <UserInfo>
+          <Trash
+            style={{ height: "14px", width: "14px" }}
+            onClick={() => deletePost()}
+          />
+        </UserInfo>
+      </StyledPhotoHeader>
+      <Image src={`${url}`} />
+      <div>
         <StyledContainer>
           <UserInfoDescription>
             <Username onClick={() => showUserProfile()}>{username}</Username>{" "}
             <Description> {description}</Description>
           </UserInfoDescription>
         </StyledContainer>
-      </PostInformations>
+      </div>
     </Wrapper>
   );
 }
 
-export default Post;
+export default DeletePost;

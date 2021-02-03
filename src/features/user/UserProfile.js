@@ -69,6 +69,7 @@ function UserProfile() {
   const params = useParams();
   const username = params.username;
   const [user, setUser] = useState({});
+  const [loggedUser, setLoggedUser] = useState({});
   const [showEdit, setShowEdit] = useState(false);
 
   function showUpdatePage() {
@@ -80,11 +81,13 @@ function UserProfile() {
       const response = await queries.user(username);
       setUser(response.data);
       const responseLoggedUser = await queries.loggedUser();
+      setLoggedUser(responseLoggedUser.data);
       if (response.data.username === responseLoggedUser.data.username) {
         setShowEdit(true);
       }
     } catch (err) {}
-  }, [setUser]);
+  }, [setUser, params.username]);
+
   return (
     <Wrapper>
       <Header />
@@ -104,7 +107,7 @@ function UserProfile() {
           </FullName>
         </div>
       </UserStyledInformation>
-      <UserPosts username={user.username} />
+      <UserPosts loggedUser={loggedUser.username} username={user.username} />
       <Footer />
     </Wrapper>
   );

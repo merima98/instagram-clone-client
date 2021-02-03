@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import queries from "../../api/queries.js";
-
+import DeletePost from "./DeletePost.js";
 const Wrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -19,17 +19,46 @@ const Image = styled.img`
 function UserPosts(props) {
   const { username } = props;
   const [posts, setPosts] = useState([]);
-
+  const [post, setPost] = useState([]);
+  const [user, setUser] = useState([]);
+  const [clicked, setClicked] = useState(false);
   useEffect(async () => {
     const response = await queries.usersPosts(username);
     setPosts(response.data);
-  }, [username]);
-
+  }, [username, setPost, setClicked]);
+  async function showLargerImage(postId) {
+    setClicked(true);
+    const response = await queries.getPostById(postId);
+    if (post) {
+      setPost(response.data);
+      setUser(response.data.user);
+    }
+  }
   return (
     <Wrapper>
       {posts.map((post) => {
-        return <Image key={post.id} src={post.url} />;
+        return (
+          <Image
+            key={post.id}
+            src={post.url}
+            onClick={() => showLargerImage(post.id)}
+          />
+        );
       })}
+      {clicked && props.loggedUser === user.username && (
+        <DeletePost
+          key={post.id}
+          url={post.url}
+          description={post.description}
+          username={user.username}
+          userId={user.id}
+          postId={post.id}
+          posts={posts}
+          setPosts={setPosts}
+          clicked={clicked}
+          setClicked={setClicked}
+        />
+      )}
     </Wrapper>
   );
 }

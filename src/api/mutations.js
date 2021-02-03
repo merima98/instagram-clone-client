@@ -24,6 +24,14 @@ function dislikePost(postId) {
   return axios.post(`/dislike?postId=${postId}`);
 }
 
+function deletePostsFromLikes(postId) {
+  return axios.delete(`/deleteLikes?postId=${postId}`);
+}
+
+function deletePost(postId) {
+  return axios.delete(`/delete?postId=${postId}`);
+}
+
 export default {
   signup,
   signin,
@@ -31,4 +39,6 @@ export default {
   likePost,
   dislikePost,
   updateUser,
+  deletePost,
+  deletePostsFromLikes,
 };
