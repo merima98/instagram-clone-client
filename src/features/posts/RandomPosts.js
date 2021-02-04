@@ -38,7 +38,6 @@ const UserUsername = styled.div`
   cursor: pointer;
   color: ${(props) => props.theme.colors.titleColor};
   font-size: 14px;
-
   overflow-wrap: anywhere;
 `;
 
@@ -51,26 +50,33 @@ const UserFullName = styled.div`
 function RandomPosts() {
   const [clickedLike, setClickedLike] = useState(false);
   const history = useHistory();
-  const { data } = useQuery("posts", () => queries.randomPosts());
+  const { data } = useQuery("posts", () => queries.posts());
   const queryClient = useQueryClient();
-
-  const mutation = useMutation(
-    clickedLike
-      ? async (data) => {
-          setClickedLike(false);
-          const response = await mutations.dislikePost(data);
-          queryClient.getQueryData("posts");
-          queryClient.setQueryData("posts", response);
-        }
-      : async (data) => {
-          setClickedLike(true);
-          const response = await mutations.likePost(data);
-          queryClient.getQueryData("posts");
-          queryClient.setQueryData("posts", response);
-        }
-  );
-
   const posts = data ? data.data : [];
+
+  const likePostMutation = useMutation(mutations.likePost, {
+    onSuccess: (data) => {
+      queryClient.setQueryData("posts", data);
+      setClickedLike(true);
+    },
+  });
+
+  const dislikePostMutation = useMutation(mutations.dislikePost, {
+    onSuccess: (data) => {
+      queryClient.setQueryData("posts", data);
+      setClickedLike(false);
+    },
+  });
+
+  async function handleOnLike(id) {
+    if (clickedLike) {
+      setClickedLike(false);
+      return dislikePostMutation.mutate(id);
+    } else {
+      setClickedLike(true);
+      return likePostMutation.mutate(id);
+    }
+  }
 
   const user = useQuery("loggedUser", queries.loggedUser);
   function showUserProfile() {
@@ -95,7 +101,7 @@ function RandomPosts() {
                   likeCount={post.likes.length}
                   userId={user.id}
                   postId={post.id}
-                  likePost={() => mutation.mutate(post.id)}
+                  likePost={() => handleOnLike(post.id)}
                 />
               );
             })}
