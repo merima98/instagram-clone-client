@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
@@ -48,36 +49,30 @@ const UserFullName = styled.div`
 `;
 
 function RandomPosts() {
-  const [posts, setPosts] = useState([]);
-  const [user, setUser] = useState({});
   const [clickedLike, setClickedLike] = useState(false);
   const history = useHistory();
-  const [isLoading, setIsLoading] = useState(true);
+  const { data } = useQuery("posts", () => queries.randomPosts());
+  const queryClient = useQueryClient();
 
-  useEffect(async () => {
-    try {
-      const response = await queries.randomPosts();
-      const data = await response.data;
-      setPosts(data);
-      const userResponse = await queries.loggedUser();
-      setUser(userResponse.data);
-      setIsLoading(false);
-    } catch (err) {}
-  }, [setPosts, setUser]);
+  const mutation = useMutation(
+    clickedLike
+      ? async (data) => {
+          setClickedLike(false);
+          const response = await mutations.dislikePost(data);
+          queryClient.getQueryData("posts");
+          queryClient.setQueryData("posts", response);
+        }
+      : async (data) => {
+          setClickedLike(true);
+          const response = await mutations.likePost(data);
+          queryClient.getQueryData("posts");
+          queryClient.setQueryData("posts", response);
+        }
+  );
 
-  async function likePost(postId) {
-    if (clickedLike === false) {
-      setClickedLike(true);
-      const response = await mutations.likePost(postId);
-      setPosts(response.data);
-    }
-    if (clickedLike === true) {
-      setClickedLike(false);
-      const response = await mutations.dislikePost(postId);
-      setPosts(response.data);
-    }
-  }
+  const posts = data ? data.data : [];
 
+  const user = useQuery("loggedUser", queries.loggedUser);
   function showUserProfile() {
     history.push(`/user/${user.username}`);
   }
@@ -86,7 +81,7 @@ function RandomPosts() {
     <div>
       <Header />
       <PostsContainer>
-        {isLoading ? (
+        {posts === null ? (
           <Spinner />
         ) : (
           <div>
@@ -100,7 +95,7 @@ function RandomPosts() {
                   likeCount={post.likes.length}
                   userId={user.id}
                   postId={post.id}
-                  likePost={() => likePost(post.id)}
+                  likePost={() => mutation.mutate(post.id)}
                 />
               );
             })}
