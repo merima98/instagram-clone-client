@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
-import { useMutation, useQuery } from "react-query";
+import { useQuery } from "react-query";
 
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
 import queries from "../../api/queries";
-import Post from "./Post";
 import { BREAKPOINTS } from "../../constants";
-import mutations from "../../api/mutations";
 import Spinner from "../spinner/Spinner";
 
 const PostsContainer = styled.div`
@@ -47,49 +45,29 @@ const UserFullName = styled.div`
   font-size: 14px;
 `;
 
+const Wrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: center;
+  grid-gap: 0.5rem;
+`;
+const Image = styled.img`
+  object-fit: cover;
+  height: 20vw;
+  width: 100%;
+  cursor: pointer;
+`;
+
 function RandomPosts() {
-  const [clickedLike, setClickedLike] = useState(false);
+  const [user, setUser] = useState({});
+  React.useEffect(async () => {
+    const response = await queries.loggedUser();
+    setUser(response.data);
+  }, [setUser]);
   const history = useHistory();
-  const { data } = useQuery("posts", () => queries.randomPosts());
+  const { data, isLoading } = useQuery("posts", () => queries.randomPosts());
   const posts = data ? data.data : [];
 
-  const likePostMutation = useMutation(mutations.likePost, {
-    onSuccess: (data) => {
-      posts.map((post) => {
-        if (Number(post.id) === Number(data.data.postId)) {
-          const newLikes = post.likes;
-          newLikes.push(data.data.likes);
-          return { ...post, likes: newLikes };
-        }
-        return post;
-      });
-    },
-  });
-
-  const dislikePostMutation = useMutation(mutations.dislikePost, {
-    onSuccess: (data) => {
-      posts.map((post) => {
-        if (Number(post.id) === Number(data.data.postId)) {
-          const newLikes = post.likes;
-          newLikes.pop();
-          return { ...post, likes: newLikes };
-        }
-        return post;
-      });
-    },
-  });
-
-  async function handleOnLike(id) {
-    if (clickedLike) {
-      setClickedLike(false);
-      return dislikePostMutation.mutate(id);
-    } else {
-      setClickedLike(true);
-      return likePostMutation.mutate(id);
-    }
-  }
-
-  const user = useQuery("loggedUser", queries.loggedUser);
   function showUserProfile() {
     history.push(`/user/${user.username}`);
   }
@@ -98,24 +76,15 @@ function RandomPosts() {
     <div>
       <Header />
       <PostsContainer>
-        {posts === null ? (
+        {isLoading ? (
           <Spinner />
         ) : (
           <div>
-            {posts.map((post) => {
-              return (
-                <Post
-                  key={post.id}
-                  url={post.url}
-                  description={post.description}
-                  username={post.user.username}
-                  likeCount={post.likes.length}
-                  userId={user.id}
-                  postId={post.id}
-                  likePost={() => handleOnLike(post.id)}
-                />
-              );
-            })}
+            <Wrapper>
+              {posts.map((post) => {
+                return <Image key={post.id} src={post.url} />;
+              })}
+            </Wrapper>
           </div>
         )}
         <div>

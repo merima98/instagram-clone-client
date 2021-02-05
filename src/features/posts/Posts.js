@@ -49,13 +49,19 @@ const UserFullName = styled.div`
 
 function Posts() {
   const [clickedLike, setClickedLike] = useState(false);
+  const [user, setUser] = useState({});
   const history = useHistory();
-  const user = useQuery("loggedUser", queries.loggedUser);
+
+  React.useEffect(async () => {
+    const response = await queries.loggedUser();
+    setUser(response.data);
+  }, [setUser]);
+
   function showUserProfile() {
     history.push(`/user/${user.username}`);
   }
 
-  const { data } = useQuery("posts", () => queries.posts());
+  const { data, isLoading } = useQuery("posts", () => queries.posts());
   const posts = data ? data.data : [];
 
   const likePostMutation = useMutation(mutations.likePost, {
@@ -99,7 +105,7 @@ function Posts() {
       <PostsContainer>
         <div>
           <NewPostForm posts={posts} />
-          {posts === null ? (
+          {isLoading ? (
             <Spinner />
           ) : (
             <div>
@@ -120,18 +126,20 @@ function Posts() {
             </div>
           )}
         </div>
-        <div>
-          <UserInfoStyled>
-            <UserUsername onClick={() => showUserProfile()}>
-              {user.username}
-            </UserUsername>
-          </UserInfoStyled>
-          <UserInfoStyled>
-            <UserFullName>
-              {user.firstName} {user.lastName}
-            </UserFullName>
-          </UserInfoStyled>
-        </div>
+        {user && (
+          <div>
+            <UserInfoStyled>
+              <UserUsername onClick={() => showUserProfile()}>
+                {user.username}
+              </UserUsername>
+            </UserInfoStyled>
+            <UserInfoStyled>
+              <UserFullName>
+                {user.firstName} {user.lastName}
+              </UserFullName>
+            </UserInfoStyled>
+          </div>
+        )}
       </PostsContainer>
       <Footer />
     </div>
