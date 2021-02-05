@@ -29,7 +29,7 @@ const LOGGED_IN_DEFAULT_LAYOUT_ROUTES = [
     component: UpdateUserProfile,
   },
   {
-    path: "/randomPosts",
+    path: "/explore",
     exact: false,
     component: RandomPosts,
   },

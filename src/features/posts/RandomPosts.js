@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery } from "react-query";
 
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
@@ -50,21 +50,32 @@ const UserFullName = styled.div`
 function RandomPosts() {
   const [clickedLike, setClickedLike] = useState(false);
   const history = useHistory();
-  const { data } = useQuery("posts", () => queries.posts());
-  const queryClient = useQueryClient();
+  const { data } = useQuery("posts", () => queries.randomPosts());
   const posts = data ? data.data : [];
 
   const likePostMutation = useMutation(mutations.likePost, {
     onSuccess: (data) => {
-      queryClient.setQueryData("posts", data);
-      setClickedLike(true);
+      posts.map((post) => {
+        if (Number(post.id) === Number(data.data.postId)) {
+          const newLikes = post.likes;
+          newLikes.push(data.data.likes);
+          return { ...post, likes: newLikes };
+        }
+        return post;
+      });
     },
   });
 
   const dislikePostMutation = useMutation(mutations.dislikePost, {
     onSuccess: (data) => {
-      queryClient.setQueryData("posts", data);
-      setClickedLike(false);
+      posts.map((post) => {
+        if (Number(post.id) === Number(data.data.postId)) {
+          const newLikes = post.likes;
+          newLikes.pop();
+          return { ...post, likes: newLikes };
+        }
+        return post;
+      });
     },
   });
 

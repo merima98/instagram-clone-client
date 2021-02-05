@@ -69,7 +69,7 @@ function Footer() {
         <Links exact to="/">
           <Home style={{ height: "16px", width: "16px" }} />
         </Links>
-        <Links exact to="/randomPosts">
+        <Links exact to="/explore">
           <Search style={{ height: "16px", width: "16px" }} />
         </Links>
         <Links exact to={`/user/${user.username}`}>

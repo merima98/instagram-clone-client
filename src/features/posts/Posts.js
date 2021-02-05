@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
+import { useMutation, useQuery } from "react-query";
 
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
@@ -47,47 +48,58 @@ const UserFullName = styled.div`
 `;
 
 function Posts() {
-  const [posts, setPosts] = useState([]);
-  const [user, setUser] = useState({});
   const [clickedLike, setClickedLike] = useState(false);
   const history = useHistory();
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(async () => {
-    try {
-      const response = await queries.posts();
-      const data = await response.data;
-      setPosts(data);
-      const userResponse = await queries.loggedUser();
-      setUser(userResponse.data);
-      setIsLoading(false);
-    } catch (err) {}
-  }, [setPosts, setUser]);
-
-  async function likePost(postId) {
-    if (clickedLike === false) {
-      setClickedLike(true);
-      const response = await mutations.likePost(postId);
-      setPosts(response.data);
-    }
-    if (clickedLike === true) {
-      setClickedLike(false);
-      const response = await mutations.dislikePost(postId);
-      setPosts(response.data);
-    }
-  }
-
+  const user = useQuery("loggedUser", queries.loggedUser);
   function showUserProfile() {
     history.push(`/user/${user.username}`);
   }
 
+  const { data } = useQuery("posts", () => queries.posts());
+  const posts = data ? data.data : [];
+
+  const likePostMutation = useMutation(mutations.likePost, {
+    onSuccess: (data) => {
+      posts.map((post) => {
+        if (Number(post.id) === Number(data.data.postId)) {
+          const newLikes = post.likes;
+          newLikes.push(data.data.likes);
+          return { ...post, likes: newLikes };
+        }
+        return post;
+      });
+    },
+  });
+
+  const dislikePostMutation = useMutation(mutations.dislikePost, {
+    onSuccess: (data) => {
+      posts.map((post) => {
+        if (Number(post.id) === Number(data.data.postId)) {
+          const newLikes = post.likes;
+          newLikes.pop();
+          return { ...post, likes: newLikes };
+        }
+        return post;
+      });
+    },
+  });
+
+  async function handleOnLike(id) {
+    if (clickedLike) {
+      setClickedLike(false);
+      return dislikePostMutation.mutate(id);
+    } else {
+      setClickedLike(true);
+      return likePostMutation.mutate(id);
+    }
+  }
   return (
     <div>
       <Header />
       <PostsContainer>
         <div>
-          <NewPostForm posts={posts} setPosts={setPosts} />
-          {isLoading ? (
+          <NewPostForm posts={posts} />
+          {posts === null ? (
             <Spinner />
           ) : (
             <div>
@@ -101,7 +113,7 @@ function Posts() {
                     likeCount={post.likes.length}
                     userId={user.id}
                     postId={post.id}
-                    likePost={() => likePost(post.id)}
+                    likePost={() => handleOnLike(post.id)}
                   />
                 );
               })}{" "}

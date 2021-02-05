@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useQueryClient } from "react-query";
 
 import mutations from "../../api/mutations";
 
@@ -59,7 +60,7 @@ const validationSchema = Yup.object().shape({
   url: Yup.string().required("Paste URL!"),
 });
 
-function NewPostForm(props) {
+function NewPostForm() {
   const formik = useFormik({
     initialValues: {
       url: "",
@@ -68,11 +69,11 @@ function NewPostForm(props) {
     onSubmit,
     validationSchema,
   });
-
+  const queryClient = useQueryClient();
   async function onSubmit(values) {
     try {
-      const newPost = await mutations.createPost(values);
-      props.setPosts([newPost.data, ...props.posts]);
+      await mutations.createPost(values);
+      queryClient.invalidateQueries("posts");
       formik.resetForm();
     } catch (err) {}
   }
