@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { useQuery } from "react-query";
 
 import queries from "../../api/queries";
 import Header from "../header/Header";
@@ -69,9 +70,13 @@ function UserProfile() {
   const history = useHistory();
   const params = useParams();
   const username = params.username;
-  const [user, setUser] = useState({});
-  const [loggedUser, setLoggedUser] = useState({});
   const [showEdit, setShowEdit] = useState(false);
+
+  const loggedUserQuery = useQuery("loggedUser", () => queries.loggedUser());
+  const loggedUser = loggedUserQuery.data?.data || {};
+
+  const userQuery = useQuery("user", () => queries.user(username));
+  const user = userQuery.data?.data || {};
 
   function showUpdatePage() {
     history.push(`/update`);
@@ -79,15 +84,11 @@ function UserProfile() {
 
   useEffect(async () => {
     try {
-      const response = await queries.user(username);
-      setUser(response.data);
-      const responseLoggedUser = await queries.loggedUser();
-      setLoggedUser(responseLoggedUser.data);
-      if (response.data.username === responseLoggedUser.data.username) {
+      if (user.username === loggedUser.username) {
         setShowEdit(true);
       }
     } catch (err) {}
-  }, [setUser, params.username]);
+  }, [params.username]);
 
   return (
     <Wrapper>

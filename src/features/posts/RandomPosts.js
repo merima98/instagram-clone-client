@@ -59,14 +59,11 @@ const Image = styled.img`
 `;
 
 function RandomPosts() {
-  const [user, setUser] = useState({});
-  React.useEffect(async () => {
-    const response = await queries.loggedUser();
-    setUser(response.data);
-  }, [setUser]);
   const history = useHistory();
-  const { data, isLoading } = useQuery("posts", () => queries.randomPosts());
-  const posts = data ? data.data : [];
+  const randomPostsQuery = useQuery("randomPosts", () => queries.randomPosts());
+  const loggedUserQuery = useQuery("loggedUser", () => queries.loggedUser());
+  const posts = randomPostsQuery.data?.data || [];
+  const user = loggedUserQuery.data?.data || {};
 
   function showUserProfile() {
     history.push(`/user/${user.username}`);
@@ -76,7 +73,7 @@ function RandomPosts() {
     <div>
       <Header />
       <PostsContainer>
-        {isLoading ? (
+        {randomPostsQuery.isLoading ? (
           <Spinner />
         ) : (
           <div>

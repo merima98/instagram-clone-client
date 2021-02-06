@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { NavLink, useHistory } from "react-router-dom";
 import { Home, User, Search, Moon, Sun, LogOut } from "react-feather";
+import { useQuery } from "react-query";
 
 import { BREAKPOINTS } from "../../constants";
 import { useAuth, useDarkMode } from "../../state";
@@ -43,16 +44,12 @@ const StyledTheme = styled.span`
 `;
 
 function Footer() {
-  const [user, setUser] = useState({});
   const setIsDarkMode = useDarkMode((state) => state.setIsDarkMode);
   const isDarkMode = useDarkMode((state) => state.isDarkMode);
   const history = useHistory();
   const setIsLoggedIn = useAuth((state) => state.setIsLoggedIn);
-
-  useEffect(async () => {
-    const response = await queries.loggedUser();
-    setUser(response.data);
-  }, [setUser]);
+  const loggedUserQuery = useQuery("loggedUser", () => queries.loggedUser());
+  const user = loggedUserQuery.data?.data || {};
 
   function onChange() {
     setIsDarkMode(!isDarkMode);

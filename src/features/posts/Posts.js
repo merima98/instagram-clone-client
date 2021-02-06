@@ -49,13 +49,9 @@ const UserFullName = styled.div`
 
 function Posts() {
   const [clickedLike, setClickedLike] = useState(false);
-  const [user, setUser] = useState({});
+  const loggedUserQuery = useQuery("loggedUser", () => queries.loggedUser());
+  const user = loggedUserQuery.data?.data || {};
   const history = useHistory();
-
-  React.useEffect(async () => {
-    const response = await queries.loggedUser();
-    setUser(response.data);
-  }, [setUser]);
 
   function showUserProfile() {
     history.push(`/user/${user.username}`);

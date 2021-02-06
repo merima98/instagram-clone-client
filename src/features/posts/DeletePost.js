@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { Trash, ChevronLeft } from "react-feather";
+import { useQueryClient } from "react-query";
 
 import mutations from "../../api/mutations.js";
 import { BREAKPOINTS } from "../../constants";
@@ -57,6 +58,7 @@ const Username = styled.span`
 `;
 
 function DeletePost(props) {
+  const queryClient = useQueryClient();
   const history = useHistory();
   const { url, description, username, postId } = props;
   function showUserProfile() {
@@ -68,7 +70,7 @@ function DeletePost(props) {
     const post = await mutations.deletePost(postId);
     props.setClicked(false);
     props.setShowAll(true);
-    props.setPosts(post.data);
+    queryClient.invalidateQueries("posts");
   }
 
   function goBack() {

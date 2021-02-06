@@ -24,8 +24,10 @@ function UserPosts(props) {
   const [clicked, setClicked] = useState(false);
   const [showAll, setShowAll] = useState(true);
   useEffect(async () => {
-    const response = await queries.usersPosts(username);
-    setPosts(response.data);
+    if (username) {
+      const response = await queries.usersPosts(username);
+      setPosts(response.data);
+    }
   }, [username, setPost, setClicked]);
   async function showLargerImage(postId) {
     setClicked(true);

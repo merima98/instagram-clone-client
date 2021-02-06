@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useFormik } from "formik";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
+import { useQuery } from "react-query";
 
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
@@ -109,8 +110,9 @@ const validationSchema = Yup.object().shape({
   image: Yup.string().required("Paste URL!"),
 });
 function UpdateUserProfile() {
-  const [user, setUser] = useState({});
   const history = useHistory();
+  const loggedUserQuery = useQuery("loggedUser", () => queries.loggedUser());
+  const user = loggedUserQuery.data?.data || {};
 
   async function onSubmit(values) {
     try {
@@ -132,11 +134,6 @@ function UpdateUserProfile() {
       }
     }
   }
-
-  useEffect(async () => {
-    const response = await queries.loggedUser();
-    setUser(response.data);
-  }, [setUser]);
 
   const formik = useFormik({
     initialValues: {

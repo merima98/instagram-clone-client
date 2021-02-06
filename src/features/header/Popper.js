@@ -4,6 +4,7 @@ import { usePopper } from "react-popper";
 import styled from "styled-components";
 import { User, Moon, Sun } from "react-feather";
 import { useHistory, NavLink } from "react-router-dom";
+import { useQuery } from "react-query";
 
 import { useAuth, useDarkMode } from "../../state";
 import { BREAKPOINTS } from "../../constants";
@@ -58,12 +59,9 @@ function Popper() {
   const [visible, setVisibility] = useState(false);
   const referenceRef = useRef(null);
   const popperRef = useRef(null);
-  const [user, setUser] = useState({});
 
-  useEffect(async () => {
-    const response = await queries.loggedUser();
-    setUser(response.data);
-  }, [setUser]);
+  const loggedUserQuery = useQuery("loggedUser", () => queries.loggedUser());
+  const user = loggedUserQuery.data?.data || {};
 
   const { styles } = usePopper(referenceRef.current, popperRef.current, {
     placement: "bottom",
