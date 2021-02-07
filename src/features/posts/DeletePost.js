@@ -70,7 +70,7 @@ function DeletePost(props) {
     const post = await mutations.deletePost(postId);
     props.setClicked(false);
     props.setShowAll(true);
-    queryClient.invalidateQueries("posts");
+    queryClient.refetchQueries("usersPosts");
   }
 
   function goBack() {
