@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { NavLink, useHistory } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useMutation } from "react-query";
 
 import { useAuth } from "../../state";
 import mutations from "../../api/mutations";
@@ -102,11 +103,15 @@ function Login() {
   const history = useHistory();
   const setIsLoggedIn = useAuth((state) => state.setIsLoggedIn);
 
+  const loginMutation = useMutation(mutations.signin, {
+    onSuccess: (data) => {
+      setIsLoggedIn(true, data.data.token);
+    },
+  });
+
   async function onSubmit(values) {
     try {
-      const response = await mutations.signin(values);
-      const token = response.data.token;
-      setIsLoggedIn(true, token);
+      loginMutation.mutate(values);
       history.push("/");
     } catch (err) {
       if (err.response.data.exception === "UserNotFound") {

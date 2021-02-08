@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 
 import queries from "../../api/queries.js";
 import DeletePost from "./DeletePost.js";
+
 const Wrapper = styled.div`
   display: ${(props) => (props.showAll ? "grid" : "flex")};
   grid-template-columns: repeat(3, 1fr);
