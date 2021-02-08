@@ -64,6 +64,7 @@ function UserPosts(props) {
           setClicked={setClicked}
           showAll={showAll}
           setShowAll={setShowAll}
+          setPostId={setPostId}
         />
       )}
     </Wrapper>

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { Trash, ChevronLeft } from "react-feather";
-import { useQueryClient } from "react-query";
+import { useQueryClient, useMutation } from "react-query";
 
 import mutations from "../../api/mutations.js";
 import { BREAKPOINTS } from "../../constants";
@@ -65,12 +65,26 @@ function DeletePost(props) {
     history.push(`/user/${username}`);
   }
 
+  const deletePostMutation = useMutation(() => mutations.deletePost(postId), {
+    onSuccess: () => {
+      return queryClient.refetchQueries("usersPosts");
+    },
+  });
+  const deletePostFromLikesMutation = useMutation(
+    () => mutations.deletePostsFromLikes(postId),
+    {
+      onSuccess: () => {
+        return queryClient.refetchQueries("usersPosts");
+      },
+    }
+  );
+
   async function deletePost() {
-    await mutations.deletePostsFromLikes(postId);
-    await mutations.deletePost(postId);
+    deletePostFromLikesMutation.mutate();
+    deletePostMutation.mutate();
+    props.setPostId(null);
     props.setClicked(false);
     props.setShowAll(true);
-    queryClient.refetchQueries("usersPosts");
   }
 
   function goBack() {
