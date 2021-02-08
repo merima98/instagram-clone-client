@@ -70,7 +70,6 @@ function UserProfile() {
   const history = useHistory();
   const params = useParams();
   const username = params.username;
-  const [showEdit, setShowEdit] = useState(false);
 
   const loggedUserQuery = useQuery("loggedUser", () => queries.loggedUser());
   const loggedUser = loggedUserQuery.data?.data || {};
@@ -84,9 +83,7 @@ function UserProfile() {
 
   useEffect(async () => {
     try {
-      if (user.username === loggedUser.username) {
-        setShowEdit(true);
-      }
+      userQuery.refetch(params.username);
     } catch (err) {}
   }, [params.username]);
 
@@ -98,7 +95,7 @@ function UserProfile() {
         <div>
           <StyledUpdate>
             <Username>{user.username}</Username>
-            {showEdit && (
+            {user.username === loggedUser.username && (
               <StyledButton onClick={() => showUpdatePage()}>
                 Edit Profile
               </StyledButton>

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
-import { useQuery } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
@@ -110,15 +110,21 @@ const validationSchema = Yup.object().shape({
   image: Yup.string().required("Paste URL!"),
 });
 function UpdateUserProfile() {
+  const queryClient = useQueryClient();
   const history = useHistory();
   const loggedUserQuery = useQuery("loggedUser", () => queries.loggedUser());
   const user = loggedUserQuery.data?.data || {};
 
+  const updateUserMutation = useMutation(mutations.updateUser, {
+    onSuccess: (data) => {
+      return queryClient.refetchQueries("user");
+    },
+  });
+
   async function onSubmit(values) {
     try {
-      const response = await mutations.updateUser(values);
-      setUser(response.data);
-      history.push(`/user/${response.data.username}`);
+      updateUserMutation.mutate(values);
+      history.push(`/user/${values.username}`);
     } catch (err) {
       if (
         err.response.data.exception === "UsernameAllreadyInUseException" &&
