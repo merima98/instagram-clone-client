@@ -43,20 +43,23 @@ const Links = styled(NavLink)`
   color: ${(props) => props.theme.colors.titleColor};
   margin-right: 1.2rem;
 `;
+function goToTheTop() {
+  window.scrollTo(0, 0);
+}
 
 function Header() {
   return (
     <StyledHeader>
-      <Title exact to="/">
+      <Title exact to="/" onClick={() => goToTheTop()}>
         worldgram
       </Title>
       <SearchUserForm />
       <StyledNavLink>
-        <Links exact to="/">
+        <Links exact to="/" onClick={() => goToTheTop()}>
           <Home />
         </Links>
         <Links exact to="/explore">
-          <Compass />
+          <Compass onClick={() => goToTheTop()} />
         </Links>
         <Popper />
       </StyledNavLink>

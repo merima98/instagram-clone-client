@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { NavLink, useHistory } from "react-router-dom";
-import { Home, User, Search, Moon, Sun, LogOut } from "react-feather";
+import { Home, User, Moon, Sun, LogOut, Compass } from "react-feather";
 import { useQuery } from "react-query";
 
 import { BREAKPOINTS } from "../../constants";
@@ -42,6 +42,9 @@ const StyledTheme = styled.span`
   color: ${(props) => props.theme.colors.titleColor};
   margin-right: 1rem;
 `;
+function goToTheTop() {
+  window.scrollTo(0, 0);
+}
 
 function Footer() {
   const setIsDarkMode = useDarkMode((state) => state.setIsDarkMode);
@@ -63,11 +66,14 @@ function Footer() {
   return (
     <StyledFooter>
       <StyledNavLink>
-        <Links exact to="/">
+        <Links exact to="/" onClick={() => goToTheTop()}>
           <Home style={{ height: "16px", width: "16px" }} />
         </Links>
         <Links exact to="/explore">
-          <Search style={{ height: "16px", width: "16px" }} />
+          <Compass
+            style={{ height: "16px", width: "16px" }}
+            onClick={() => goToTheTop()}
+          />
         </Links>
         <Links exact to={`/user/${user.username}`}>
           <User style={{ height: "16px", width: "16px" }} />
