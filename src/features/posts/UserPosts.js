@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { useQuery } from "react-query";
 
 import queries from "../../api/queries.js";
 import DeletePost from "./DeletePost.js";
@@ -18,26 +19,26 @@ const Image = styled.img`
 
 function UserPosts(props) {
   const { username } = props;
-  const [posts, setPosts] = useState([]);
-  const [post, setPost] = useState([]);
-  const [user, setUser] = useState([]);
   const [clicked, setClicked] = useState(false);
   const [showAll, setShowAll] = useState(true);
-  useEffect(async () => {
-    if (username) {
-      const response = await queries.usersPosts(username);
-      setPosts(response.data);
-    }
-  }, [username, setPost, setClicked]);
+  const [postId, setPostId] = useState(null);
+
+  const getUsersPostsQuery = useQuery(["usersPosts", username], () =>
+    queries.usersPosts(username)
+  );
+  const getPostByIdQuery = useQuery(["getPostById", postId], () =>
+    queries.getPostById(postId)
+  );
+
+  const posts = getUsersPostsQuery.data?.data || [];
+  const post = getPostByIdQuery.data?.data || {};
+  const user = post?.user || {};
   async function showLargerImage(postId) {
     setClicked(true);
     setShowAll(false);
-    const response = await queries.getPostById(postId);
-    if (post) {
-      setPost(response.data);
-      setUser(response.data.user);
-    }
+    setPostId(postId);
   }
+
   return (
     <Wrapper showAll={showAll}>
       {showAll &&
@@ -59,7 +60,6 @@ function UserPosts(props) {
           userId={user.id}
           postId={post.id}
           posts={posts}
-          setPosts={setPosts}
           clicked={clicked}
           setClicked={setClicked}
           showAll={showAll}

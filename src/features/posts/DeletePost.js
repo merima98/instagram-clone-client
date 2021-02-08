@@ -67,7 +67,7 @@ function DeletePost(props) {
 
   async function deletePost() {
     await mutations.deletePostsFromLikes(postId);
-    const post = await mutations.deletePost(postId);
+    await mutations.deletePost(postId);
     props.setClicked(false);
     props.setShowAll(true);
     queryClient.refetchQueries("usersPosts");
