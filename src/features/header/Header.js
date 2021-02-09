@@ -3,11 +3,10 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { Home, Compass } from "react-feather";
 
-import SearchUserForm from "../user/SearchUserForm";
 import { BREAKPOINTS } from "../../constants";
 import Popper from "./Popper";
 
-const StyledHeader = styled.div`
+const Wrapper = styled.div`
   justify-content: start;
   top: 0;
   left: 0;
@@ -21,6 +20,12 @@ const StyledHeader = styled.div`
     justify-content: space-evenly;
   }
   border-bottom: 1px solid ${(props) => props.theme.colors.headerBorder};
+`;
+
+const StyledHeader = styled.div`
+  width: 65%;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Title = styled(NavLink)`
@@ -49,21 +54,22 @@ function goToTheTop() {
 
 function Header() {
   return (
-    <StyledHeader>
-      <Title exact to="/" onClick={() => goToTheTop()}>
-        worldgram
-      </Title>
-      <SearchUserForm />
-      <StyledNavLink>
-        <Links exact to="/" onClick={() => goToTheTop()}>
-          <Home />
-        </Links>
-        <Links exact to="/explore">
-          <Compass onClick={() => goToTheTop()} />
-        </Links>
-        <Popper />
-      </StyledNavLink>
-    </StyledHeader>
+    <Wrapper>
+      <StyledHeader>
+        <Title exact to="/" onClick={() => goToTheTop()}>
+          worldgram
+        </Title>
+        <StyledNavLink>
+          <Links exact to="/" onClick={() => goToTheTop()}>
+            <Home />
+          </Links>
+          <Links exact to="/explore">
+            <Compass onClick={() => goToTheTop()} />
+          </Links>
+          <Popper />
+        </StyledNavLink>
+      </StyledHeader>
+    </Wrapper>
   );
 }
 

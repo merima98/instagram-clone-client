@@ -15,7 +15,7 @@ const PostsContainer = styled.div`
   margin: 0 auto;
   margin-bottom: 2.5rem;
   @media (min-width: ${BREAKPOINTS.SMALL_DEVICES}) {
-    width: 80%;
+    width: 65%;
     margin-bottom: 0rem;
   }
 `;
