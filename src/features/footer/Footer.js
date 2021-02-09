@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { NavLink, useHistory } from "react-router-dom";
 import { Home, User, Moon, Sun, LogOut, Compass } from "react-feather";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 
 import { BREAKPOINTS } from "../../constants";
 import { useAuth, useDarkMode } from "../../state";
@@ -53,6 +53,7 @@ function Footer() {
   const setIsLoggedIn = useAuth((state) => state.setIsLoggedIn);
   const loggedUserQuery = useQuery("loggedUser", () => queries.loggedUser());
   const user = loggedUserQuery.data?.data || {};
+  const queryClient = useQueryClient();
 
   function onChange() {
     setIsDarkMode(!isDarkMode);
@@ -63,6 +64,11 @@ function Footer() {
     history.push("/");
     setIsLoggedIn(false, token);
   }
+
+  function cancelPrevious() {
+    queryClient.cancelQueries("user");
+  }
+
   return (
     <StyledFooter>
       <StyledNavLink>
@@ -75,7 +81,11 @@ function Footer() {
             onClick={() => goToTheTop()}
           />
         </Links>
-        <Links exact to={`/user/${user.username}`}>
+        <Links
+          exact
+          to={`/user/${user.username}`}
+          onClick={() => cancelPrevious()}
+        >
           <User style={{ height: "16px", width: "16px" }} />
         </Links>
         <StyledTheme onClick={onChange}>

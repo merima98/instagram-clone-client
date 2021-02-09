@@ -53,7 +53,6 @@ const UserProfile = styled(NavLink)`
 
 function Popper() {
   const queryClient = useQueryClient();
-
   const setIsDarkMode = useDarkMode((state) => state.setIsDarkMode);
   const isDarkMode = useDarkMode((state) => state.isDarkMode);
   const history = useHistory();
