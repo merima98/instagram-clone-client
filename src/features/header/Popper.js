@@ -4,7 +4,7 @@ import { usePopper } from "react-popper";
 import styled from "styled-components";
 import { User, Moon, Sun } from "react-feather";
 import { useHistory, NavLink } from "react-router-dom";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 
 import { useAuth, useDarkMode } from "../../state";
 import { BREAKPOINTS } from "../../constants";
@@ -52,6 +52,8 @@ const UserProfile = styled(NavLink)`
 `;
 
 function Popper() {
+  const queryClient = useQueryClient();
+
   const setIsDarkMode = useDarkMode((state) => state.setIsDarkMode);
   const isDarkMode = useDarkMode((state) => state.isDarkMode);
   const history = useHistory();
@@ -91,6 +93,10 @@ function Popper() {
     setVisibility(false);
   }
 
+  function cancelPrevious() {
+    queryClient.cancelQueries("user");
+  }
+
   useClickAway(popperRef, onMouseEvent, ["mousedown"]);
   return (
     <span>
@@ -101,7 +107,11 @@ function Popper() {
       />
       <div ref={popperRef} style={styles.popper}>
         <DropdownContainer visible={visible}>
-          <UserProfile exact to={`/user/${user.username}`}>
+          <UserProfile
+            exact
+            to={`/user/${user.username}`}
+            onClick={() => cancelPrevious()}
+          >
             <User
               style={{ width: "12px", height: "12px", marginRight: "4px" }}
             />

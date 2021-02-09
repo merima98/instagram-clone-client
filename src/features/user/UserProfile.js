@@ -7,6 +7,8 @@ import queries from "../../api/queries";
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
 import UserPosts from "../posts/UserPosts.js";
+import Spinner from "../spinner/Spinner.js";
+import UserNotFound404 from "../404/UserNotFound404.js";
 import { BREAKPOINTS } from "../../constants";
 
 const Wrapper = styled.div`
@@ -90,23 +92,38 @@ function UserProfile() {
   return (
     <Wrapper>
       <Header />
-      <UserStyledInformation>
-        <Image src={`${user.image}`} />
+      {userQuery.isLoading ? (
+        <Spinner />
+      ) : (
         <div>
-          <StyledUpdate>
-            <Username>{user.username}</Username>
-            {user.username === loggedUser.username && (
-              <StyledButton onClick={() => showUpdatePage()}>
-                Edit Profile
-              </StyledButton>
-            )}
-          </StyledUpdate>
-          <FullName>
-            {user.firstName} {user.lastName}
-          </FullName>
+          {userQuery.isError ? (
+            <UserNotFound404 />
+          ) : (
+            <div>
+              <UserStyledInformation>
+                <Image src={`${user.image}`} />
+                <div>
+                  <StyledUpdate>
+                    <Username>{user.username}</Username>
+                    {user.username === loggedUser.username && (
+                      <StyledButton onClick={() => showUpdatePage()}>
+                        Edit Profile
+                      </StyledButton>
+                    )}
+                  </StyledUpdate>
+                  <FullName>
+                    {user.firstName} {user.lastName}
+                  </FullName>
+                </div>
+              </UserStyledInformation>
+              <UserPosts
+                loggedUser={loggedUser.username}
+                username={user.username}
+              />
+            </div>
+          )}
         </div>
-      </UserStyledInformation>
-      <UserPosts loggedUser={loggedUser.username} username={user.username} />
+      )}
       <Footer />
     </Wrapper>
   );
