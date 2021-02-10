@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useQuery } from "react-query";
+import { useHistory } from "react-router-dom";
 
 import Header from "../header/Header";
 import Footer from "../footer/Footer";
@@ -19,7 +20,6 @@ const PostsContainer = styled.div`
     margin-bottom: 0rem;
   }
 `;
-
 const Wrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -34,8 +34,13 @@ const Image = styled.img`
 `;
 
 function RandomPosts() {
+  const history = useHistory();
   const randomPostsQuery = useQuery("randomPosts", () => queries.randomPosts());
   const posts = randomPostsQuery.data?.data || [];
+
+  async function showLargerImage(postId) {
+    history.push(`/post/${postId}`);
+  }
 
   return (
     <div>
@@ -47,7 +52,13 @@ function RandomPosts() {
           <div>
             <Wrapper>
               {posts.map((post) => {
-                return <Image key={post.id} src={post.url} />;
+                return (
+                  <Image
+                    key={post.id}
+                    src={post.url}
+                    onClick={() => showLargerImage(post.id)}
+                  />
+                );
               })}
             </Wrapper>
           </div>

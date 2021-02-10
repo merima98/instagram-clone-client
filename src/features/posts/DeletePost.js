@@ -1,69 +1,76 @@
 import React from "react";
+import { useParams, useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
+import { useQuery, useQueryClient, useMutation } from "react-query";
 import { Trash, ChevronLeft } from "react-feather";
-import { useQueryClient, useMutation } from "react-query";
 
+import Header from "../header/Header";
+import Footer from "../footer/Footer";
+import queries from "../../api/queries.js";
 import mutations from "../../api/mutations.js";
 import { BREAKPOINTS } from "../../constants";
 
-const Wrapper = styled.div`
+const Container = styled.div`
   background-color: ${(props) => props.theme.colors.backgroundColor};
   border-radius: 8px;
   border: 1px solid ${(props) => props.theme.colors.headerBorder};
+  display: grid;
+  width: 100%;
+  margin: 64px auto;
+  margin-bottom: 4rem;
+  @media (min-width: ${BREAKPOINTS.SMALL_DEVICES}) {
+    width: 65%;
+  }
 `;
-
 const StyledPhotoHeader = styled.div`
   display: flex;
+  padding: 10px;
 `;
 const UserInfo = styled.div`
-  @media (min-width: ${BREAKPOINTS.SMALL_DEVICES}) {
-    padding: 20px;
-  }
-  padding: 5px;
+  width: 100%;
   font-size: 14px;
   cursor: pointer;
   font-weight: bold;
   color: ${(props) => props.theme.colors.titleColor};
 `;
-const StyledContainer = styled.div`
-  display: flex;
-`;
 const Image = styled.img`
   width: 100%;
-  object-fit: cover;
-  height: 20vw;
-  @media (min-width: ${BREAKPOINTS.SMALL_DEVICES}) {
-    height: auto;
-  }
+  height: auto;
 `;
-const UserInfoDescription = styled.div`
+const StyledContainer = styled.div`
+  width: 100%;
+  padding: 10px;
   font-size: 14px;
-  padding-left: 5px;
-  padding-bottom: 5px;
-  @media (min-width: ${BREAKPOINTS.SMALL_DEVICES}) {
-    padding-left: 20px;
-  }
 `;
 
-const Description = styled.span`
-  font-weight: normal;
-  color: ${(props) => props.theme.colors.titleColor};
+const UserInfoDescription = styled.div`
+  width: 100%;
+  font-size: 14px;
+  padding-left: 4px;
 `;
-
 const Username = styled.span`
   cursor: pointer;
   font-weight: bold;
   color: ${(props) => props.theme.colors.titleColor};
 `;
+const Description = styled.span`
+  font-weight: normal;
+  color: ${(props) => props.theme.colors.titleColor};
+`;
 
-function DeletePost(props) {
+function DeletePost() {
   const queryClient = useQueryClient();
+  const params = useParams();
   const history = useHistory();
-  const { url, description, username, postId } = props;
-  function showUserProfile() {
-    history.push(`/user/${username}`);
-  }
+  const postId = params.postId;
+
+  const getPostByIdQuery = useQuery(["getPostById", postId], () =>
+    queries.getPostById(postId)
+  );
+  const loggedUserQuery = useQuery("loggedUser", () => queries.loggedUser());
+  const loggedUser = loggedUserQuery.data?.data || {};
+  const post = getPostByIdQuery.data?.data || {};
+  const user = post?.user || {};
 
   const deletePostMutation = useMutation(() => mutations.deletePost(postId), {
     onSuccess: () => {
@@ -82,41 +89,53 @@ function DeletePost(props) {
   async function deletePost() {
     deletePostFromLikesMutation.mutate();
     deletePostMutation.mutate();
-    props.setPostId(null);
-    props.setClicked(false);
-    props.setShowAll(true);
+    history.push(`/user/${user.username}`);
   }
 
   function goBack() {
-    props.setClicked(false);
-    props.setShowAll(true);
+    history.goBack();
+  }
+
+  function showUserProfile() {
+    history.push(`/user/${user.username}`);
   }
 
   return (
-    <Wrapper>
-      <StyledPhotoHeader>
-        <UserInfo>
-          <ChevronLeft
-            style={{ height: "14px", width: "14px" }}
-            onClick={() => goBack()}
-          />
-        </UserInfo>
-        <UserInfo onClick={() => showUserProfile()}>{username}</UserInfo>
-        <UserInfo>
-          <Trash
-            style={{ height: "14px", width: "14px" }}
-            onClick={() => deletePost()}
-          />
-        </UserInfo>
-      </StyledPhotoHeader>
-      <Image src={`${url}`} />
-      <StyledContainer>
-        <UserInfoDescription>
-          <Username onClick={() => showUserProfile()}>{username}</Username>{" "}
-          <Description> {description}</Description>
-        </UserInfoDescription>
-      </StyledContainer>
-    </Wrapper>
+    <div>
+      <Header />
+      <Container>
+        <StyledPhotoHeader>
+          <UserInfo>
+            <ChevronLeft
+              style={{ height: "14px", width: "14px" }}
+              onClick={() => goBack()}
+            />
+          </UserInfo>
+          <UserInfo onClick={() => showUserProfile()}>{user.username}</UserInfo>
+
+          <UserInfo>
+            {loggedUser.username === user.username && (
+              <Trash
+                style={{ height: "14px", width: "14px" }}
+                onClick={() => deletePost()}
+              />
+            )}
+          </UserInfo>
+        </StyledPhotoHeader>
+        <Image src={`${post.url}`} />
+        <div>
+          <StyledContainer>
+            <UserInfoDescription>
+              <Username onClick={() => showUserProfile()}>
+                {user.username}
+              </Username>{" "}
+              <Description> {post.description}</Description>
+            </UserInfoDescription>
+          </StyledContainer>
+        </div>
+      </Container>
+      <Footer />
+    </div>
   );
 }
 

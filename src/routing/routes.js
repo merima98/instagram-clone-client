@@ -6,6 +6,7 @@ import NewPostForm from "../features/posts/NewPostForm";
 import RandomPosts from "../features/posts/RandomPosts";
 import UserProfile from "../features/user/UserProfile";
 import UpdateUserProfile from "../features/user/UpdateUserProfile";
+import DeletePost from "../features/posts/DeletePost.js";
 
 const LOGGED_IN_DEFAULT_LAYOUT_ROUTES = [
   {
@@ -22,6 +23,11 @@ const LOGGED_IN_DEFAULT_LAYOUT_ROUTES = [
     path: "/user/:username",
     exact: false,
     component: UserProfile,
+  },
+  {
+    path: "/post/:postId",
+    exact: false,
+    component: DeletePost,
   },
   {
     path: "/update",
