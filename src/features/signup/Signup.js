@@ -116,13 +116,13 @@ function Signup() {
   const signupMutation = useMutation(mutations.signup, {
     onSuccess: (data) => {
       setIsLoggedIn(true, data.data.token);
+      history.push("/");
     },
   });
 
   async function onSubmit(values) {
     try {
       signupMutation.mutate(values);
-      history.push("/");
     } catch (err) {
       if (
         err.response.data.exception === "UsernameAllreadyInUseException" &&
