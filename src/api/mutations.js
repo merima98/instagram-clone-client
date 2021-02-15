@@ -20,10 +20,6 @@ function likePost(postId) {
   return axios.post(`/like?postId=${postId}`);
 }
 
-function dislikePost(postId) {
-  return axios.post(`/dislike?postId=${postId}`);
-}
-
 function deletePostsFromLikes(postId) {
   return axios.delete(`/deleteLikes?postId=${postId}`);
 }
@@ -37,7 +33,6 @@ export default {
   signin,
   createPost,
   likePost,
-  dislikePost,
   updateUser,
   deletePost,
   deletePostsFromLikes,

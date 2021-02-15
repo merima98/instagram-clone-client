@@ -62,38 +62,30 @@ function Posts() {
 
   const likePostMutation = useMutation(mutations.likePost, {
     onSuccess: (data) => {
-      posts.map((post) => {
-        if (Number(post.id) === Number(data.data.postId)) {
-          const newLikes = post.likes;
-          newLikes.push(data.data.likes);
-          return { ...post, likes: newLikes };
-        }
-        return post;
-      });
-    },
-  });
-
-  const dislikePostMutation = useMutation(mutations.dislikePost, {
-    onSuccess: (data) => {
-      posts.map((post) => {
-        if (Number(post.id) === Number(data.data.postId)) {
-          const newLikes = post.likes;
-          newLikes.pop();
-          return { ...post, likes: newLikes };
-        }
-        return post;
-      });
+      if (data.data.likes) {
+        posts.map((post) => {
+          if (Number(post.id) === Number(data.data.postId)) {
+            const newLikes = post.likes;
+            newLikes.push(data.data.likes);
+            return { ...post, likes: newLikes };
+          }
+          return post;
+        });
+      } else {
+        posts.map((post) => {
+          if (Number(post.id) === Number(data.data.postId)) {
+            const newLikes = post.likes;
+            newLikes.pop();
+            return { ...post, likes: newLikes };
+          }
+          return post;
+        });
+      }
     },
   });
 
   async function handleOnLike(id) {
-    if (clickedLike) {
-      setClickedLike(false);
-      return dislikePostMutation.mutate(id);
-    } else {
-      setClickedLike(true);
-      return likePostMutation.mutate(id);
-    }
+    return likePostMutation.mutate(id);
   }
   return (
     <div>
